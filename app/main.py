@@ -3,7 +3,7 @@ import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
-from fastapi import Depends, FastAPI, Form, HTTPException, Request
+from fastapi import Depends, FastAPI, Form, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -222,8 +222,10 @@ def blueprint(request: Request):
     return templates.TemplateResponse("blueprint.html", {"request": request})
 
 @app.get("/assistant", response_class=HTMLResponse)
-def assistant_page(request: Request, db: Session = Depends(get_db)):
-    return templates.TemplateResponse("assistant.html", {"request": request, "result": None, "case_id": "CP-00006"})
+def assistant_page(request: Request, query: str = Query(""), case_id: str = Query("CP-00006"), db: Session = Depends(get_db)):
+    case = load_case(db, case_id) if case_id else None
+    result = answer(query, case=case) if query.strip() else None
+    return templates.TemplateResponse("assistant.html", {"request": request, "result": result, "query": query, "case_id": case_id})
 
 @app.post("/assistant", response_class=HTMLResponse)
 def ask_assistant(request: Request, query: str = Form(...), case_id: str = Form("CP-00006"), db: Session = Depends(get_db)):

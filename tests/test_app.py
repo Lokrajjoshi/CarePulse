@@ -25,6 +25,13 @@ def test_health_and_assistant_api():
     assert "risk" in response.json()["answer"].lower()
 
 
+def test_assistant_prompt_links_return_grounded_answer():
+    response = client.get("/assistant?query=Why+is+this+case+high+risk")
+    assert response.status_code == 200
+    assert "GROUNDED ANSWER" in response.text
+    assert "CP-00006" in response.text
+
+
 def test_event_api_rejects_unknown_event_without_mutation():
     response = client.post("/api/events", json={"case_id": "CP-00006", "event_type": "NOT_A_REAL_EVENT"})
     assert response.status_code == 400
