@@ -1,4 +1,6 @@
 import logging
+import subprocess
+import sys
 from datetime import datetime
 from pathlib import Path
 from fastapi import Depends, FastAPI, Form, HTTPException, Request
@@ -7,8 +9,9 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session, joinedload
-from src.database import get_db
+from src.database import Base, SessionLocal, engine, get_db
 from src.models import Case, Interaction
+from src.config import settings
 from src.metrics import customer_effort, first_response_minutes, resolution_minutes, silent_wait_minutes
 from src.risk_engine import experience_risk
 from src.care_actions import next_best_actions
@@ -23,6 +26,19 @@ app = FastAPI(title="CarePulse", description="Synthetic customer experience inte
 BASE = Path(__file__).resolve().parent
 app.mount("/static", StaticFiles(directory=BASE / "static"), name="static")
 templates = Jinja2Templates(directory=BASE / "templates")
+
+@app.on_event("startup")
+def bootstrap_demo_database():
+    """Make an empty demo deployment usable after a free-host restart."""
+    if settings.app_env != "demo":
+        return
+    Base.metadata.create_all(engine)
+    db = SessionLocal()
+    try:
+        if db.query(Case).count() == 0:
+            subprocess.run([sys.executable, str(BASE.parent / "scripts" / "reset_demo.py")], check=True)
+    finally:
+        db.close()
 
 class EventIn(BaseModel):
     case_id: str = Field(min_length=3, max_length=40)
