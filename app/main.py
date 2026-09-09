@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import Session, selectinload
 from src.database import Base, SessionLocal, engine, get_db
 from src.models import Case, Interaction
 from src.config import settings
@@ -54,13 +54,13 @@ class AssistantIn(BaseModel):
     case_id: str | None = None
 
 def load_case(db, case_id):
-    case = db.query(Case).options(joinedload(Case.interactions), joinedload(Case.promises), joinedload(Case.interventions), joinedload(Case.feedback)).filter(Case.case_id == case_id).first()
+    case = db.query(Case).options(selectinload(Case.interactions), selectinload(Case.promises), selectinload(Case.interventions), selectinload(Case.feedback)).filter(Case.case_id == case_id).first()
     if not case:
         raise HTTPException(404, "Case not found")
     return case
 
 def case_query(db):
-    return db.query(Case).options(joinedload(Case.interactions), joinedload(Case.promises), joinedload(Case.interventions), joinedload(Case.feedback))
+    return db.query(Case).options(selectinload(Case.interactions), selectinload(Case.promises), selectinload(Case.interventions), selectinload(Case.feedback))
 
 @app.get("/health")
 def health():
