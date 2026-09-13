@@ -4,10 +4,12 @@ import sys
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from fastapi import Depends, FastAPI, Form, HTTPException, Query, Request
+from fastapi.exceptions import RequestValidationError
 from pydantic import BaseModel, Field
-from fastapi.responses import HTMLResponse, RedirectResponse, Response
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Response
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from sqlalchemy.orm import Session, selectinload
 from src.database import Base, SessionLocal, engine, get_db
 from src.models import Agent, Case, Interaction
@@ -28,6 +30,35 @@ app = FastAPI(title="CarePulse", description="Synthetic customer experience inte
 BASE = Path(__file__).resolve().parent
 app.mount("/static", StaticFiles(directory=BASE / "static"), name="static")
 templates = Jinja2Templates(directory=BASE / "templates")
+
+@app.exception_handler(HTTPException)
+async def http_error(request: Request, exc: HTTPException):
+    if request.url.path.startswith("/api/"):
+        return JSONResponse({"error": str(exc.detail), "status_code": exc.status_code}, status_code=exc.status_code)
+    title = "This case or page is not available" if exc.status_code == 404 else "We could not open that page"
+    message = "The link may be outdated, or the requested case is not in this demo dataset." if exc.status_code == 404 else "CarePulse could not complete this request. Please try again in a moment."
+    return templates.TemplateResponse("error.html", {"request": request, "title": title, "message": message}, status_code=exc.status_code)
+
+@app.exception_handler(StarletteHTTPException)
+async def starlette_http_error(request: Request, exc: StarletteHTTPException):
+    if request.url.path.startswith("/api/"):
+        return JSONResponse({"error": str(exc.detail), "status_code": exc.status_code}, status_code=exc.status_code)
+    title = "This page is not available" if exc.status_code == 404 else "We could not open that page"
+    message = "The link may be outdated. Return to the CarePulse home page and choose another workspace view." if exc.status_code == 404 else "CarePulse could not complete this request. Please try again in a moment."
+    return templates.TemplateResponse("error.html", {"request": request, "title": title, "message": message}, status_code=exc.status_code)
+
+@app.exception_handler(RequestValidationError)
+async def validation_error(request: Request, exc: RequestValidationError):
+    if request.url.path.startswith("/api/"):
+        return JSONResponse({"error": "The request data is invalid.", "status_code": 422}, status_code=422)
+    return templates.TemplateResponse("error.html", {"request": request, "title": "Please check the information", "message": "One or more values were not accepted. Please review the form and try again."}, status_code=422)
+
+@app.exception_handler(Exception)
+async def unexpected_error(request: Request, exc: Exception):
+    logging.exception("Unhandled request error: %s", exc)
+    if request.url.path.startswith("/api/"):
+        return JSONResponse({"error": "CarePulse could not complete the request.", "status_code": 500}, status_code=500)
+    return templates.TemplateResponse("error.html", {"request": request, "title": "CarePulse could not complete that", "message": "The service encountered a temporary problem. Please try again, or return to the home page."}, status_code=500)
 
 @app.on_event("startup")
 def bootstrap_demo_database():
