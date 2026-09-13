@@ -242,6 +242,16 @@ def report_pdf(request: Request, db: Session = Depends(get_db)):
     cases, filters = filtered_report_cases(dict(request.query_params), db)
     return Response(pdf_bytes(cases, "CarePulse CX Report", filters.label()), media_type="application/pdf", headers={"Content-Disposition": "attachment; filename=carepulse-executive-report.pdf"})
 
+@app.get("/reports/agent.pdf")
+def agent_report_pdf(request: Request, db: Session = Depends(get_db)):
+    cases, filters = filtered_report_cases(dict(request.query_params), db)
+    return Response(pdf_bytes(cases, "CarePulse Agent CX Report", filters.label()), media_type="application/pdf", headers={"Content-Disposition": "attachment; filename=carepulse-agent-cx-report.pdf"})
+
+@app.get("/reports/team.pdf")
+def team_report_pdf(request: Request, db: Session = Depends(get_db)):
+    cases, filters = filtered_report_cases(dict(request.query_params), db)
+    return Response(pdf_bytes(cases, "CarePulse Team CX Report", filters.label()), media_type="application/pdf", headers={"Content-Disposition": "attachment; filename=carepulse-team-cx-report.pdf"})
+
 @app.get("/methodology", response_class=HTMLResponse)
 def methodology(request: Request):
     return templates.TemplateResponse("methodology.html", {"request": request})

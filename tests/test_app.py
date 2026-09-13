@@ -44,6 +44,10 @@ def test_insights_filters_and_reports_are_consistent():
     csv = client.get("/reports/cases.csv?days=365&team=Core+Support&channel=Chat")
     xlsx = client.get("/reports/analysis.xlsx?days=365&team=Core+Support&channel=Chat")
     pdf = client.get("/reports/executive.pdf?days=365&team=Core+Support&channel=Chat")
+    agent_pdf = client.get("/reports/agent.pdf?days=365&agent=Agent-01")
+    team_pdf = client.get("/reports/team.pdf?days=365&team=Core+Support")
     assert csv.status_code == 200 and csv.headers["content-type"].startswith("text/csv")
     assert xlsx.status_code == 200 and xlsx.content[:2] == b"PK"
     assert pdf.status_code == 200 and pdf.content.startswith(b"%PDF")
+    assert agent_pdf.status_code == 200 and agent_pdf.content.startswith(b"%PDF")
+    assert team_pdf.status_code == 200 and team_pdf.content.startswith(b"%PDF")
