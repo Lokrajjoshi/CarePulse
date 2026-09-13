@@ -68,6 +68,11 @@ def case_query(db):
 def health():
     return {"status": "ok", "service": "carepulse"}
 
+@app.get("/favicon.ico")
+def favicon():
+    svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#ef8069"/><text x="32" y="42" text-anchor="middle" font-family="Arial" font-size="25" font-weight="700" fill="white">CP</text></svg>'
+    return Response(svg, media_type="image/svg+xml")
+
 @app.get("/api/cases")
 def cases(db: Session = Depends(get_db)):
     return [{"case_id": c.case_id, "industry": c.industry, "channel": c.channel, "issue_category": c.issue_category, "status": c.status} for c in db.query(Case).limit(100).all()]

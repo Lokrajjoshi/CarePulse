@@ -19,6 +19,7 @@ def test_required_pages_render():
 
 def test_health_and_assistant_api():
     assert client.get("/health").json()["status"] == "ok"
+    assert client.get("/favicon.ico").status_code == 200
     response = client.post("/api/assistant", json={"case_id": "CP-00006", "query": "Why is this case high risk?"})
     assert response.status_code == 200
     assert response.json()["supported"] is True
