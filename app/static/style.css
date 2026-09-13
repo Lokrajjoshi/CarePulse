@@ -102,3 +102,13 @@ html[data-theme="dark"] .distribution>div:first-child,
 html[data-theme="dark"] .legend{color:var(--muted)}
 html[data-theme="dark"] .search{background:#0d1d2a;color:var(--ink);border-color:#496e76}
 html[data-theme="dark"] .button.ghost{background:transparent}
+
+/* Insights filters: stable label/control rhythm at every desktop width. */
+.filter-form{display:grid;grid-template-columns:repeat(6,minmax(132px,1fr));align-items:end;gap:14px 12px}
+.filter-form label{display:grid;grid-template-rows:auto 42px;gap:6px;min-width:0;line-height:1.2}
+.filter-form label select,.filter-form label input{width:100%;min-width:0;height:42px;margin:0;padding:9px 11px}
+.filter-form>.button{width:100%;height:42px;margin:0;align-self:end;white-space:nowrap}
+.filter-form>.button.ghost{background:transparent}
+@media(max-width:1180px){.filter-form{grid-template-columns:repeat(4,minmax(132px,1fr))}}
+@media(max-width:850px){.filter-form{grid-template-columns:repeat(3,minmax(120px,1fr))}}
+@media(max-width:600px){.filter-form{grid-template-columns:1fr 1fr;gap:12px}.filter-form>.button{width:100%}}
