@@ -5,12 +5,12 @@ from datetime import datetime
 from pathlib import Path
 from fastapi import Depends, FastAPI, Form, HTTPException, Query, Request
 from pydantic import BaseModel, Field
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session, selectinload
 from src.database import Base, SessionLocal, engine, get_db
-from src.models import Case, Interaction
+from src.models import Agent, Case, Interaction
 from src.config import settings
 from src.metrics import customer_effort, first_response_minutes, resolution_minutes, silent_wait_minutes
 from src.risk_engine import experience_risk
@@ -20,6 +20,8 @@ from src.insights import business_recommendations
 from src.sentiment import classify
 from src.event_engine import EVENT_TYPES, ingest_event
 from src.assistant import answer
+from src.analytics import Filters, apply_filters, metrics_for_cases, recommendations_for_cases, agent_rows, team_rows
+from app.services.report_service import csv_bytes, xlsx_bytes, pdf_bytes
 
 logging.basicConfig(level=logging.INFO)
 app = FastAPI(title="CarePulse", description="Synthetic customer experience intervention and intelligence platform")
@@ -212,6 +214,33 @@ def recommendations_page(request: Request, db: Session = Depends(get_db)):
 @app.get("/explorer", response_class=HTMLResponse)
 def explorer(request: Request, db: Session = Depends(get_db)):
     return templates.TemplateResponse("explorer.html", {"request": request, "cases": db.query(Case).limit(40).all(), "table_name": "Cases", "purpose": "One row per customer journey, including context, ownership, timing, and status."})
+
+@app.get("/insights", response_class=HTMLResponse)
+def insights(request: Request, days: int = 90, industry: str = "", channel: str = "", issue: str = "", priority: str = "", agent: str = "", team: str = "", risk: str = "", sentiment: str = "", start: str = "", end: str = "", db: Session = Depends(get_db)):
+    filters = Filters.from_query(days=days, industry=industry, channel=channel, issue=issue, priority=priority, agent=agent, team=team, risk=risk, sentiment=sentiment, start=start, end=end)
+    all_cases = case_query(db).all()
+    agents = db.query(Agent).order_by(Agent.agent_id).all()
+    filtered = apply_filters(all_cases, filters, agents)
+    return templates.TemplateResponse("insights.html", {"request": request, "filters": filters, "filters_label": filters.label(), "metrics": metrics_for_cases(filtered), "agents": agent_rows(filtered, agents), "teams": team_rows(filtered, agents), "recommendations": recommendations_for_cases(filtered), "agent_options": agents, "team_options": sorted({a.team for a in agents}), "industry_options": sorted({c.industry for c in all_cases}), "channel_options": sorted({c.channel for c in all_cases}), "issue_options": sorted({c.issue_category for c in all_cases}), "priority_options": sorted({c.priority for c in all_cases}), "risk_options": ["LOW", "MEDIUM", "HIGH"], "sentiment_options": ["positive", "neutral", "negative"]})
+
+def filtered_report_cases(params, db):
+    filters = Filters.from_query(**params)
+    return apply_filters(case_query(db).all(), filters, db.query(Agent).all()), filters
+
+@app.get("/reports/cases.csv")
+def report_csv(request: Request, db: Session = Depends(get_db)):
+    cases, _ = filtered_report_cases(dict(request.query_params), db)
+    return Response(csv_bytes(cases), media_type="text/csv", headers={"Content-Disposition": "attachment; filename=carepulse-filtered-cases.csv"})
+
+@app.get("/reports/analysis.xlsx")
+def report_xlsx(request: Request, db: Session = Depends(get_db)):
+    cases, _ = filtered_report_cases(dict(request.query_params), db)
+    return Response(xlsx_bytes(cases), media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", headers={"Content-Disposition": "attachment; filename=carepulse-analysis.xlsx"})
+
+@app.get("/reports/executive.pdf")
+def report_pdf(request: Request, db: Session = Depends(get_db)):
+    cases, filters = filtered_report_cases(dict(request.query_params), db)
+    return Response(pdf_bytes(cases, "CarePulse CX Report", filters.label()), media_type="application/pdf", headers={"Content-Disposition": "attachment; filename=carepulse-executive-report.pdf"})
 
 @app.get("/methodology", response_class=HTMLResponse)
 def methodology(request: Request):
