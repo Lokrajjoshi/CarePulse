@@ -1,7 +1,7 @@
 import logging
 import subprocess
 import sys
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from fastapi import Depends, FastAPI, Form, HTTPException, Query, Request
 from pydantic import BaseModel, Field
@@ -20,7 +20,7 @@ from src.insights import business_recommendations
 from src.sentiment import classify
 from src.event_engine import EVENT_TYPES, ingest_event
 from src.assistant import answer
-from src.analytics import Filters, apply_filters, metrics_for_cases, recommendations_for_cases, agent_rows, team_rows
+from src.analytics import Filters, apply_filters, metrics_for_cases, recommendations_for_cases, agent_rows, team_rows, monthly_rows, comparison_metrics
 from app.services.report_service import csv_bytes, xlsx_bytes, pdf_bytes
 
 logging.basicConfig(level=logging.INFO)
@@ -226,7 +226,9 @@ def insights(request: Request, days: int = 90, industry: str = "", channel: str 
     all_cases = case_query(db).all()
     agents = db.query(Agent).order_by(Agent.agent_id).all()
     filtered = apply_filters(all_cases, filters, agents)
-    return templates.TemplateResponse("insights.html", {"request": request, "filters": filters, "filters_label": filters.label(), "metrics": metrics_for_cases(filtered), "agents": agent_rows(filtered, agents), "teams": team_rows(filtered, agents), "recommendations": recommendations_for_cases(filtered), "agent_options": agents, "team_options": sorted({a.team for a in agents}), "industry_options": sorted({c.industry for c in all_cases}), "channel_options": sorted({c.channel for c in all_cases}), "issue_options": sorted({c.issue_category for c in all_cases}), "priority_options": sorted({c.priority for c in all_cases}), "risk_options": ["LOW", "MEDIUM", "HIGH"], "sentiment_options": ["positive", "neutral", "negative"]})
+    previous_filters = Filters.from_query(days=filters.days, industry=filters.industry, channel=filters.channel, issue=filters.issue, priority=filters.priority, agent=filters.agent, team=filters.team, risk=filters.risk, sentiment=filters.sentiment, start=(date.today() - timedelta(days=filters.days * 2)).isoformat(), end=(date.today() - timedelta(days=filters.days + 1)).isoformat())
+    previous = apply_filters(all_cases, previous_filters, agents)
+    return templates.TemplateResponse("insights.html", {"request": request, "filters": filters, "filters_label": filters.label(), "metrics": metrics_for_cases(filtered), "comparison": comparison_metrics(filtered, previous), "history": monthly_rows(all_cases), "agents": agent_rows(filtered, agents), "teams": team_rows(filtered, agents), "recommendations": recommendations_for_cases(filtered), "agent_options": agents, "team_options": sorted({a.team for a in agents}), "industry_options": sorted({c.industry for c in all_cases}), "channel_options": sorted({c.channel for c in all_cases}), "issue_options": sorted({c.issue_category for c in all_cases}), "priority_options": sorted({c.priority for c in all_cases}), "risk_options": ["LOW", "MEDIUM", "HIGH"], "sentiment_options": ["positive", "neutral", "negative"]})
 
 def filtered_report_cases(params, db):
     filters = Filters.from_query(**params)

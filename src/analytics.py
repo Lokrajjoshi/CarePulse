@@ -90,3 +90,16 @@ def agent_rows(cases, agents):
 def team_rows(cases, agents):
     by_id = {a.agent_id: a.team for a in agents}
     return [{"team": team, **metrics_for_cases([c for c in cases if by_id.get(c.current_owner, "Unassigned") == team])} for team in sorted({by_id.get(c.current_owner, "Unassigned") for c in cases})]
+
+
+def monthly_rows(cases):
+    groups = {}
+    for case in cases:
+        key = case.created_at.strftime("%Y-%m")
+        groups.setdefault(key, []).append(case)
+    return [{"period": period, **metrics_for_cases(groups[period])} for period in sorted(groups)]
+
+
+def comparison_metrics(current, previous):
+    now, before = metrics_for_cases(current), metrics_for_cases(previous)
+    return {key: {"current": now[key], "previous": before[key], "delta": round(now[key] - before[key], 1) if isinstance(now[key], (int, float)) else None} for key in ("cases", "csat", "dsat_pct", "silent_wait", "promise_reliability", "repeat_contact", "recovery_rate")}
