@@ -3,6 +3,8 @@ from fastapi.testclient import TestClient
 from app.main import app
 
 client = TestClient(app)
+client.__enter__()
+client.post("/login", data={"email": "cx.manager@carepulse.demo", "password": "carepulse-demo"})
 
 
 def test_required_pages_render():
@@ -15,6 +17,13 @@ def test_required_pages_render():
     for route in routes:
         response = client.get(route)
         assert response.status_code == 200, route
+
+
+def test_sidebar_highlights_current_page():
+    response = client.get("/risk-monitor")
+    assert response.status_code == 200
+    assert 'class="side-link is-active" href="/risk-monitor"' in response.text
+    assert 'class="side-link is-active" href="/story"' not in response.text
 
 
 def test_health_and_assistant_api():

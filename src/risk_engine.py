@@ -1,4 +1,5 @@
 from .metrics import customer_effort, silent_wait_minutes
+from .tenant import risk_thresholds
 
 def experience_risk(case):
     drivers = []
@@ -17,6 +18,6 @@ def experience_risk(case):
     effort = customer_effort(case)
     if effort >= 10: score += 10; drivers.append(("High customer effort", 10))
     score = min(score, 100)
-    band = "HIGH" if score >= 60 else "MEDIUM" if score >= 30 else "LOW"
+    medium_threshold, high_threshold = risk_thresholds()
+    band = "HIGH" if score >= high_threshold else "MEDIUM" if score >= medium_threshold else "LOW"
     return {"score": score, "band": band, "drivers": [{"name": n, "points": p} for n, p in sorted(drivers, key=lambda x: -x[1])]}
-
