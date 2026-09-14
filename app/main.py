@@ -51,6 +51,7 @@ ROLE_RULES = {
     "/promise-wait": {"admin", "cx_manager", "business_manager"},
     "/recovery": {"admin", "cx_manager", "business_manager"},
     "/explorer": {"admin", "cx_manager", "business_manager"},
+    "/cases": {"admin", "cx_manager", "business_manager", "agent", "customer"},
     "/simulator": {"admin", "cx_manager"},
     "/agent": {"admin", "cx_manager", "business_manager", "agent"},
     "/customer": {"admin", "cx_manager", "business_manager", "agent", "customer"},
@@ -473,7 +474,14 @@ def customer_view(request: Request, case_id: str, db: Session = Depends(get_db))
 
 @app.get("/cases", response_class=HTMLResponse)
 def case_list(request: Request, db: Session = Depends(get_db)):
-    return templates.TemplateResponse(request, "cases.html", {"request": request, "cases": case_query(db).limit(30).all()})
+    query = case_query(db)
+    user = getattr(request.state, "user", None)
+    if user and settings.app_env != "demo":
+        if user.role == "agent":
+            query = query.filter(Case.current_owner == user.agent_id)
+        elif user.role == "customer":
+            query = query.filter(Case.customer_id == user.customer_id)
+    return templates.TemplateResponse(request, "cases.html", {"request": request, "cases": query.limit(30).all()})
 
 def intelligence_context(db):
     cs = case_query(db).all()
@@ -539,7 +547,7 @@ def insights(request: Request, days: int = 90, industry: str = "", channel: str 
     filtered = apply_filters(all_cases, filters, agents)
     previous_filters = Filters.from_query(days=filters.days, industry=filters.industry, channel=filters.channel, issue=filters.issue, priority=filters.priority, agent=filters.agent, team=filters.team, risk=filters.risk, sentiment=filters.sentiment, start=(date.today() - timedelta(days=filters.days * 2)).isoformat(), end=(date.today() - timedelta(days=filters.days + 1)).isoformat())
     previous = apply_filters(all_cases, previous_filters, agents)
-    return templates.TemplateResponse(request, "insights.html", {"request": request, "filters": filters, "filters_label": filters.label(), "metrics": metrics_for_cases(filtered), "comparison": comparison_metrics(filtered, previous), "history": monthly_rows(all_cases), "agents": agent_rows(filtered, agents), "teams": team_rows(filtered, agents), "recommendations": recommendations_for_cases(filtered), "agent_options": agents, "team_options": sorted({a.team for a in agents}), "industry_options": sorted({c.industry for c in all_cases}), "channel_options": sorted({c.channel for c in all_cases}), "issue_options": sorted({c.issue_category for c in all_cases}), "priority_options": sorted({c.priority for c in all_cases}), "risk_options": ["LOW", "MEDIUM", "HIGH"], "sentiment_options": ["positive", "neutral", "negative"]})
+    return templates.TemplateResponse(request, "insights.html", {"request": request, "filters": filters, "filters_label": filters.label(), "metrics": metrics_for_cases(filtered), "comparison": comparison_metrics(filtered, previous), "history": monthly_rows(filtered), "agents": agent_rows(filtered, agents), "teams": team_rows(filtered, agents), "recommendations": recommendations_for_cases(filtered), "agent_options": agents, "team_options": sorted({a.team for a in agents}), "industry_options": sorted({c.industry for c in all_cases}), "channel_options": sorted({c.channel for c in all_cases}), "issue_options": sorted({c.issue_category for c in all_cases}), "priority_options": sorted({c.priority for c in all_cases}), "risk_options": ["LOW", "MEDIUM", "HIGH"], "sentiment_options": ["positive", "neutral", "negative"]})
 
 def filtered_report_cases(params, db):
     filters = Filters.from_query(**params)
@@ -581,12 +589,16 @@ def blueprint(request: Request):
 @app.get("/assistant", response_class=HTMLResponse)
 def assistant_page(request: Request, query: str = Query(""), case_id: str = Query("CP-00006"), db: Session = Depends(get_db)):
     case = load_case(db, case_id) if case_id else None
+    if case:
+        enforce_case_access(request, case)
     result = answer(query, case=case) if query.strip() else None
     return templates.TemplateResponse(request, "assistant.html", {"request": request, "result": result, "query": query, "case_id": case_id})
 
 @app.post("/assistant", response_class=HTMLResponse)
 def ask_assistant(request: Request, query: str = Form(...), case_id: str = Form("CP-00006"), db: Session = Depends(get_db)):
     case = load_case(db, case_id) if case_id else None
+    if case:
+        enforce_case_access(request, case)
     return templates.TemplateResponse(request, "assistant.html", {"request": request, "result": answer(query, case=case), "query": query, "case_id": case_id})
 
 @app.get("/simulator", response_class=HTMLResponse)

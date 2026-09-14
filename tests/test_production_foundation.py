@@ -40,6 +40,18 @@ def test_role_restriction_and_validation(monkeypatch):
         assert client.post("/api/events", json={"case_id": "CP-00006", "event_type": "CASE_OPENED", "metadata": "bad"}).status_code == 422
 
 
+def test_agent_cannot_open_unassigned_assistant_case(monkeypatch):
+    monkeypatch.setattr(settings, "app_env", "production")
+    with TestClient(app, base_url="https://testserver") as client:
+        login(client, "agent@carepulse.demo")
+        with SessionLocal() as db:
+            agent = db.query(User).filter_by(email="agent@carepulse.demo").one()
+            other_case = db.query(Case).filter(Case.current_owner != agent.agent_id).first()
+            assert other_case is not None
+            response = client.get(f"/assistant?case_id={other_case.case_id}&query=Give+me+a+summary")
+        assert response.status_code == 403
+
+
 def test_settings_and_action_tracking():
     with TestClient(app) as client:
         login(client, "admin@carepulse.demo")
