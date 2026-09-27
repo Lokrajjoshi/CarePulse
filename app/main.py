@@ -503,7 +503,7 @@ def journey(request: Request, db: Session = Depends(get_db)):
 @app.get("/risk-monitor", response_class=HTMLResponse)
 def risk_monitor(request: Request, db: Session = Depends(get_db)):
     ctx = intelligence_context(db)
-    return templates.TemplateResponse(request, "risk_monitor.html", {"request": request, "experience_risk": experience_risk, **ctx})
+    return templates.TemplateResponse(request, "risk_monitor.html", {"request": request, "experience_risk": experience_risk, "silent_wait_minutes": silent_wait_minutes, **ctx})
 
 @app.get("/sentiment", response_class=HTMLResponse)
 def sentiment_page(request: Request, db: Session = Depends(get_db)):
