@@ -20,7 +20,7 @@ def test_missed_promise_adds_explainable_risk():
     now = datetime(2026, 9, 29)
     case = SimpleNamespace(
         created_at=now,
-        resolved_at=now,
+        resolved_at=now + timedelta(minutes=1),
         interactions=[],
         promises=[SimpleNamespace(promise_met=False)],
         feedback=None,
