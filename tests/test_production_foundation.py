@@ -62,6 +62,16 @@ def test_settings_and_action_tracking():
         assert action.json()["status"] == "planned"
 
 
+def test_recovery_action_rejects_unknown_status():
+    with TestClient(app) as client:
+        login(client, "admin@carepulse.demo")
+        response = client.post(
+            "/api/cases/CP-00006/actions",
+            json={"action": "Call customer", "owner": "Agent-05", "status": "done_later"},
+        )
+        assert response.status_code == 422
+
+
 def test_unknown_page_has_friendly_error():
     with TestClient(app) as client:
         login(client, "cx.manager@carepulse.demo")
