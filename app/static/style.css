@@ -122,3 +122,150 @@ html[data-theme="dark"] .button.ghost{background:transparent}
 @media(max-width:700px){.sidebar{max-height:none;overflow:visible}.sidebar .side-link:nth-of-type(n){display:flex!important;width:100%;}.side-label{display:block}.sidebar-bottom{display:flex}}
 .mobile-nav-toggle{display:none}
 @media(max-width:700px){.sidebar{padding:14px}.mobile-nav-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;margin:0 0 8px;padding:10px 12px;border:1px solid #2a5362;border-radius:5px;background:#17364a;color:#e8f2f2;font:700 13px/1 inherit;cursor:pointer}.mobile-nav-toggle span{color:#7ed0c5;font-size:17px}#carepulse-navigation{display:none}#carepulse-navigation .side-link,#carepulse-navigation .side-label,#carepulse-navigation .sidebar-bottom{display:flex!important}.sidebar:not(.nav-open) #carepulse-navigation{display:none}.sidebar.nav-open #carepulse-navigation{display:block}.sidebar.nav-open .side-label{display:block!important}}
+.hero-photo{position:absolute;inset:12% 2% 7% 10%;width:88%;height:81%;object-fit:cover;object-position:64% center;border-radius:18px;opacity:.74;filter:saturate(.84) contrast(1.04);box-shadow:0 28px 55px rgba(13,27,42,.22);transform:translate3d(calc(var(--mx,0) * -8px),calc(var(--my,0) * -8px),0) rotateY(-4deg);transition:transform .4s ease,filter .4s ease,opacity .4s ease;z-index:-2}
+.hero-visual:hover .hero-photo{opacity:.86;filter:saturate(1) contrast(1.06)}
+.hero-photo-shade{position:absolute;inset:12% 2% 7% 10%;border-radius:18px;background:linear-gradient(90deg,rgba(13,27,42,.68),rgba(13,27,42,.08) 62%,rgba(13,27,42,.28)),linear-gradient(0deg,rgba(13,27,42,.26),transparent 42%);z-index:1;pointer-events:none}
+.hero-visual .hero-orbit,.hero-visual .hero-connection,.hero-visual .hero-core,.hero-visual .hero-node{z-index:2}
+html[data-theme="dark"] .hero-photo{opacity:.7;filter:saturate(.78) brightness(.72) contrast(1.12)}
+html[data-theme="dark"] .hero-visual:hover .hero-photo{opacity:.8}
+@media(prefers-reduced-motion:reduce){.hero-photo{transform:none;transition:none}.hero-visual:hover .hero-photo{opacity:.74}}
+@media(max-width:900px){.hero-photo,.hero-photo-shade{inset:5% 3% 5% 3%;width:94%;height:90%;object-position:62% center}.hero-photo-shade{background:linear-gradient(90deg,rgba(13,27,42,.72),rgba(13,27,42,.12) 70%,rgba(13,27,42,.3))}}
+@media(max-width:700px){.hero-photo,.hero-photo-shade{inset:3% 4% 8%;width:92%;height:86%;opacity:.56}.hero-photo-shade{background:linear-gradient(90deg,rgba(13,27,42,.8),rgba(13,27,42,.22))}.hero-visual:hover .hero-photo{opacity:.62}}
+.system-model{display:grid;grid-template-columns:minmax(260px,.75fr) minmax(440px,1.25fr);gap:42px;align-items:center;margin:18px 0 32px;padding:34px 0 20px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.system-model-copy h2{font-size:clamp(25px,3vw,38px);line-height:1.08;max-width:430px;margin-bottom:12px}.system-model-copy>p.muted{max-width:450px}.model-detail{margin-top:25px;padding:16px 18px;border-left:3px solid var(--coral);background:var(--white);box-shadow:var(--shadow)}.model-detail-label{display:block;color:var(--teal);font-size:10px;letter-spacing:1.4px;font-weight:900}.model-detail strong{display:block;margin:7px 0 2px;color:var(--navy);font-size:18px}.model-detail p{margin:0;color:var(--muted);font-size:13px}
+.system-model-visual{position:relative;min-height:340px;perspective:1100px;transform-style:preserve-3d;isolation:isolate}.system-model-visual:before{content:"";position:absolute;left:8%;right:8%;bottom:17px;height:34px;border-radius:50%;background:linear-gradient(180deg,#1d918b,#0d5b63);box-shadow:0 16px 25px rgba(13,27,42,.2),inset 0 1px 0 rgba(255,255,255,.35);transform:rotateX(70deg);z-index:-1}.model-arc{position:absolute;left:50%;border:1px solid rgba(20,125,120,.32);border-bottom:0;border-radius:330px 330px 0 0;transform:translateX(-50%) rotateX(8deg);transform-origin:bottom center;pointer-events:none}.model-arc-outer{width:88%;height:245px;bottom:45px;background:linear-gradient(180deg,rgba(20,125,120,.12),rgba(20,125,120,.025));box-shadow:0 0 0 14px rgba(20,125,120,.035),inset 0 12px 24px rgba(20,125,120,.06);animation:model-breathe 6s ease-in-out infinite}.model-arc-inner{width:62%;height:180px;bottom:45px;border-color:rgba(229,125,98,.35);background:linear-gradient(180deg,rgba(229,125,98,.08),transparent);box-shadow:inset 0 10px 18px rgba(229,125,98,.06)}.model-core{position:absolute;left:50%;bottom:83px;width:158px;height:116px;transform:translateX(-50%) translateZ(40px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle at 32% 18%,#60c7bc,#147d78 45%,#0d1b2a 100%);border:1px solid rgba(255,255,255,.42);border-radius:80px 80px 12px 12px;color:#fff;box-shadow:0 18px 28px rgba(13,27,42,.27),inset 0 1px 0 rgba(255,255,255,.45);animation:model-core-float 5s ease-in-out infinite}.model-core span{font-size:8px;letter-spacing:1.4px;color:#b9ece5;font-weight:900}.model-core strong{font-size:21px;line-height:1.05;margin:5px 0}.model-core small{font-size:9px;color:#d8eeee}.model-pillar{position:absolute;z-index:3;width:142px;min-height:70px;padding:10px 12px;text-align:left;border:1px solid var(--line);border-radius:7px;background:rgba(255,255,255,.92);color:var(--ink);box-shadow:0 12px 24px rgba(13,27,42,.12);cursor:pointer;font:inherit;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease,background .25s ease}.model-pillar:hover,.model-pillar:focus-visible{transform:translateY(-5px) translateZ(12px);box-shadow:0 18px 30px rgba(13,27,42,.19);outline:none}.model-pillar.is-selected{border-color:var(--teal);background:#edf8f6;box-shadow:0 0 0 3px rgba(20,125,120,.12),0 15px 30px rgba(13,27,42,.16)}.model-pillar span{display:block;color:var(--coral);font-size:9px;font-weight:900;letter-spacing:1px}.model-pillar strong{display:block;color:var(--navy);font-size:14px}.model-pillar small{display:block;color:var(--muted);font-size:10px;line-height:1.2;margin-top:1px}.pillar-signals{left:2%;top:12%}.pillar-reason{right:2%;top:9%}.pillar-action{left:5%;bottom:3%}.pillar-outcome{right:4%;bottom:3%}@keyframes model-breathe{50%{transform:translateX(-50%) rotateX(8deg) scale(1.015);opacity:.84}}@keyframes model-core-float{0%,100%{transform:translateX(-50%) translateZ(40px) translateY(0)}50%{transform:translateX(-50%) translateZ(58px) translateY(-6px)}}
+html[data-theme="dark"] .model-detail,html[data-theme="dark"] .model-pillar{background:rgba(16,36,49,.94);border-color:var(--line)}html[data-theme="dark"] .model-detail strong,html[data-theme="dark"] .model-pillar strong{color:var(--ink)}html[data-theme="dark"] .model-pillar.is-selected{background:#153b42;border-color:#7ed0c5}
+@media(prefers-reduced-motion:reduce){.model-arc-outer,.model-core{animation:none}.model-pillar{transition:none}}
+@media(max-width:900px){.system-model{grid-template-columns:1fr;gap:12px}.system-model-copy{max-width:600px}.system-model-visual{max-width:620px;width:100%;margin:auto}}
+@media(max-width:600px){.system-model{padding-top:26px}.system-model-visual{min-height:380px;transform:scale(.86);transform-origin:top center;margin-bottom:-45px}.model-pillar{width:132px}.pillar-signals{left:0}.pillar-reason{right:0}.pillar-action{left:0;bottom:1%}.pillar-outcome{right:0;bottom:1%}}
+/* Keep the global workspace shortcuts compact and out of the hero reading path. */
+.assistant-launcher{left:auto;right:24px;bottom:24px;width:max-content;max-width:calc(100vw - 48px)}
+.insights-launcher{left:auto;right:24px;bottom:72px;max-width:calc(100vw - 48px)}
+@media(max-width:700px){.assistant-launcher{left:auto;right:14px;bottom:14px;max-width:calc(100vw - 28px)}.insights-launcher{left:auto;right:14px;bottom:62px;max-width:calc(100vw - 28px)}}
+.assistant-launcher,.insights-launcher{display:inline-flex!important;left:auto!important;right:24px!important;width:max-content!important;max-width:calc(100vw - 48px)!important}
+@media(max-width:700px){.assistant-launcher,.insights-launcher{right:14px!important;max-width:calc(100vw - 28px)!important}}
+
+/* Cross-page theme normalization: older feature panels use literal colors, so
+   keep their surfaces and text readable when the shared theme changes. */
+html[data-theme="dark"] .chapter,
+html[data-theme="dark"] .summary-strip span,
+html[data-theme="dark"] .story-outcome,
+html[data-theme="dark"] .recovery-banner,
+html[data-theme="dark"] .signal-grid div,
+html[data-theme="dark"] .summary-grid div,
+html[data-theme="dark"] .action,
+html[data-theme="dark"] .question,
+html[data-theme="dark"] .analyst-note,
+html[data-theme="dark"] .risk-summary > div,
+html[data-theme="dark"] .dist-card,
+html[data-theme="dark"] .simulator-note,
+html[data-theme="dark"] .filter-panel,
+html[data-theme="dark"] .explorer-tabs,
+html[data-theme="dark"] .tabs,
+html[data-theme="dark"] .compare-card,
+html[data-theme="dark"] .comparison-panel,
+html[data-theme="dark"] .decision-panel,
+html[data-theme="dark"] .derived-panel,
+html[data-theme="dark"] .quote-panel,
+html[data-theme="dark"] .normal-card,
+html[data-theme="dark"] .recommendation-card,
+html[data-theme="dark"] .supported-panel,
+html[data-theme="dark"] .simulator-grid > *,
+html[data-theme="dark"] .report-actions,
+html[data-theme="dark"] .success-notice {
+  background: var(--white);
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+html[data-theme="dark"] .chapter strong,
+html[data-theme="dark"] .summary-strip strong,
+html[data-theme="dark"] .signal-grid strong,
+html[data-theme="dark"] .summary-grid strong,
+html[data-theme="dark"] .risk-summary > div strong,
+html[data-theme="dark"] .story-outcome h2,
+html[data-theme="dark"] .recovery-banner h2,
+html[data-theme="dark"] .action strong,
+html[data-theme="dark"] .question strong,
+html[data-theme="dark"] .compare-card strong,
+html[data-theme="dark"] .recommendation-card strong,
+html[data-theme="dark"] .normal-card strong {
+  color: var(--ink) !important;
+}
+
+html[data-theme="dark"] .chapter small,
+html[data-theme="dark"] .story-outcome p,
+html[data-theme="dark"] .recovery-banner p,
+html[data-theme="dark"] .outcome-stat span,
+html[data-theme="dark"] .recovery-rate span,
+html[data-theme="dark"] .risk-summary > div small,
+html[data-theme="dark"] .analyst-note,
+html[data-theme="dark"] .action p,
+html[data-theme="dark"] .question p,
+html[data-theme="dark"] .simulator-note,
+html[data-theme="dark"] .compare-card p,
+html[data-theme="dark"] .recommendation-card p {
+  color: var(--muted) !important;
+}
+
+html[data-theme="dark"] .risk-summary > div,
+html[data-theme="dark"] .risk-summary > div small,
+html[data-theme="dark"] .risk-summary > div strong {
+  color: var(--ink) !important;
+}
+
+html[data-theme="dark"] .event-dot { box-shadow: 0 0 0 4px #153b42; }
+html[data-theme="dark"] .event-danger { box-shadow: 0 0 0 4px #3a292d; }
+html[data-theme="dark"] .event-good { box-shadow: 0 0 0 4px #153b42; }
+html[data-theme="dark"] .meter,
+html[data-theme="dark"] .rank-track,
+html[data-theme="dark"] .dist-track { background: #203946; }
+html[data-theme="dark"] .summary-strip { background: #17313e; }
+html[data-theme="dark"] .summary-strip span { border-color: var(--line); }
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] .settings-form input,
+html[data-theme="dark"] .settings-form textarea,
+html[data-theme="dark"] .simulator-form input,
+html[data-theme="dark"] .simulator-form textarea,
+html[data-theme="dark"] .assistant-form textarea {
+  background: #0d1d2a;
+  color: var(--ink);
+  border-color: #496e76;
+}
+
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder { color: #8fa9ae; opacity: 1; }
+html[data-theme="dark"] .button.ghost,
+html[data-theme="dark"] .button.secondary { color: var(--ink); border-color: #496e76; }
+html[data-theme="dark"] .button.ghost:hover,
+html[data-theme="dark"] .button.secondary:hover { background: #173b4a; }
+html[data-theme="dark"] .story-link,
+html[data-theme="dark"] .back-link { color: #8ed8cf; }
+
+html[data-theme="dark"] .topbar,
+html[data-theme="dark"] .mobile-nav-toggle,
+html[data-theme="dark"] .session-control {
+  background-color: rgba(9, 21, 31, .94);
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+html[data-theme="dark"] .topbar a,
+html[data-theme="dark"] .topbar .muted,
+html[data-theme="dark"] .topbar span { color: var(--muted); }
+html[data-theme="dark"] .topbar a:hover { color: var(--ink); }
+
+/* Keep the light theme equally explicit when a page has a stale dark class. */
+html[data-theme="light"] .topbar,
+html[data-theme="light"] .chapter,
+html[data-theme="light"] .filter-panel,
+html[data-theme="light"] .story-outcome,
+html[data-theme="light"] .recovery-banner {
+  color: var(--ink);
+}
+
+@media(prefers-reduced-motion:reduce){
+  .chapter,.story-outcome,.recovery-banner,.action,.model-pillar{transition:none!important}
+}

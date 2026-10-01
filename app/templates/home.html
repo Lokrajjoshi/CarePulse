@@ -4,21 +4,44 @@
   <div class="hero-layout">
     <div class="hero-copy">
       <p class="eyebrow">CUSTOMER EXPERIENCE INTELLIGENCE</p>
-      <h1>See experience deterioration before DSAT arrives.</h1>
-      <p class="lede">CarePulse connects journey signals, explainable risk, and practical service recovery actions using synthetic data.</p>
+      <h1>Before the score, there is a journey.</h1>
+      <p class="lede">CarePulse reads the signals behind every customer journey, explains where risk is forming, and guides the next-best care before feedback arrives. This prototype uses synthetic data.</p>
       <div class="actions"><a class="button" href="/dashboard">Open executive dashboard</a><a class="button ghost" href="/cases">Explore cases</a></div>
     </div>
-    <div class="hero-visual" aria-label="CarePulse signal loop: detect, explain, recover">
+    <div class="hero-visual" aria-label="CarePulse journey signal loop: observe signals, explain risk, guide care">
+      <img class="hero-photo" src="/static/carepulse-operations-hero.png" alt="CX operations team reviewing customer journey analytics" loading="eager" fetchpriority="high">
+      <div class="hero-photo-shade"></div>
       <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
       <div class="hero-core"><span>CAREPULSE</span><strong>CX</strong><small>signal loop</small></div>
-      <div class="hero-node node-detect"><b>01</b><span>Detect</span><small>early friction</small></div>
-      <div class="hero-node node-explain"><b>02</b><span>Explain</span><small>why it matters</small></div>
-      <div class="hero-node node-recover"><b>03</b><span>Recover</span><small>next best care</small></div>
+      <div class="hero-node node-detect"><b>01</b><span>Signals</span><small>wait · promises</small></div>
+      <div class="hero-node node-explain"><b>02</b><span>Risk</span><small>visible reasons</small></div>
+      <div class="hero-node node-recover"><b>03</b><span>Care</span><small>next-best action</small></div>
       <div class="hero-connection connection-one"></div><div class="hero-connection connection-two"></div><div class="hero-connection connection-three"></div>
     </div>
   </div>
 </section>
+<section class="system-model" aria-labelledby="system-model-title">
+  <div class="system-model-copy">
+    <p class="eyebrow">HOW CAREPULSE WORKS</p>
+    <h2 id="system-model-title">One operating loop for every customer journey.</h2>
+    <p class="muted">CarePulse connects the signal a customer creates, the reason a team can act on, and the outcome the organisation can measure.</p>
+    <div class="model-detail" aria-live="polite">
+      <span class="model-detail-label">SELECT A LAYER</span>
+      <strong id="model-detail-title">Signals</strong>
+      <p id="model-detail-copy">Waiting, transfers, sentiment, promises, and feedback become a shared view of experience health.</p>
+    </div>
+  </div>
+  <div class="system-model-visual" aria-label="CarePulse operating model">
+    <div class="model-arc model-arc-outer"></div>
+    <div class="model-arc model-arc-inner"></div>
+    <div class="model-core"><span>CAREPULSE</span><strong>Signal<br>to action</strong><small>grounded CX intelligence</small></div>
+    <button class="model-pillar pillar-signals is-selected" type="button" data-model="signals" aria-pressed="true"><span>01</span><strong>Signals</strong><small>what the journey says</small></button>
+    <button class="model-pillar pillar-reason" type="button" data-model="reason" aria-pressed="false"><span>02</span><strong>Explain</strong><small>why attention matters</small></button>
+    <button class="model-pillar pillar-action" type="button" data-model="action" aria-pressed="false"><span>03</span><strong>Action</strong><small>what care can change</small></button>
+    <button class="model-pillar pillar-outcome" type="button" data-model="outcome" aria-pressed="false"><span>04</span><strong>Outcome</strong><small>what improvement means</small></button>
+  </div>
+</section>
 <section class="metric-grid">{% for label,value in [("Total cases",overview.total_cases),("CSAT",overview.csat),("DSAT",overview.dsat_pct|string+"%"),("High risk",overview.high_risk_cases)] %}<article class="metric"><small>{{label}}</small><strong>{{value}}</strong></article>{% endfor %}</section>
 <section class="split"><div><h2>Three views, one journey</h2><p><strong>Customer:</strong> What is happening to me?</p><p><strong>Agent:</strong> What is happening right now?</p><p><strong>Business:</strong> What should we improve permanently?</p></div><div class="callout"><strong>Demo disclaimer</strong><p>Every record is synthetic. Patterns illustrate analysis design and do not prove real-world causation.</p></div></section>
-<script>(function(){const visual=document.querySelector(".hero-visual");if(!visual)return;visual.addEventListener("pointermove",function(event){const box=visual.getBoundingClientRect(),x=(event.clientX-box.left)/box.width-.5,y=(event.clientY-box.top)/box.height-.5;visual.style.setProperty("--mx",x.toFixed(3));visual.style.setProperty("--my",y.toFixed(3))});visual.addEventListener("pointerleave",function(){visual.style.setProperty("--mx",0);visual.style.setProperty("--my",0)})})();</script>
+<script>(function(){const visual=document.querySelector(".hero-visual");if(visual){visual.addEventListener("pointermove",function(event){const box=visual.getBoundingClientRect(),x=(event.clientX-box.left)/box.width-.5,y=(event.clientY-box.top)/box.height-.5;visual.style.setProperty("--mx",x.toFixed(3));visual.style.setProperty("--my",y.toFixed(3))});visual.addEventListener("pointerleave",function(){visual.style.setProperty("--mx",0);visual.style.setProperty("--my",0)})}const details={signals:["Signals","Waiting, transfers, sentiment, promises, and feedback become a shared view of experience health."],reason:["Explain","The risk score stays tied to visible drivers, so a team can challenge or trust the recommendation."],action:["Action","Agents receive a concrete next step, an owner, and a place to record what happened."],outcome:["Outcome","Recovery, repeat contact, promise reliability, and DSAT show whether the intervention helped."]};document.querySelectorAll("[data-model]").forEach(function(button){button.addEventListener("click",function(){const item=details[button.dataset.model];document.querySelectorAll("[data-model]").forEach(function(other){const selected=other===button;other.classList.toggle("is-selected",selected);other.setAttribute("aria-pressed",String(selected))});document.querySelector("#model-detail-title").textContent=item[0];document.querySelector("#model-detail-copy").textContent=item[1]})})})();</script>
 {% endblock %}
