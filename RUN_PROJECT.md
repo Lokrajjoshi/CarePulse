@@ -17,6 +17,8 @@ Every fresh demo reset (deliberate and destructive only to the local synthetic d
 python scripts\reset_demo.py
 ```
 
+The demo contains fixed-seed synthetic cases for learning and is not a place for real customer information. Resetting the demo recreates that local dataset, so any local changes made to the demo records will be replaced.
+
 Run tests:
 
 ```powershell
