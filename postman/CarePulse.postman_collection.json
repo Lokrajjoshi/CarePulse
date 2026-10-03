@@ -1,2 +1,70 @@
-{"info":{"name":"CarePulse API","schema":"https://schema.getpostman.com/json/collection/v2.1.0/collection.json"},"variable":[{"key":"baseUrl","value":"http://127.0.0.1:8000"},{"key":"caseId","value":"CP-00001"}],"item":[{"name":"Health","request":{"method":"GET","url":"{{baseUrl}}/health"}},{"name":"Overview","request":{"method":"GET","url":"{{baseUrl}}/api/metrics/overview"}},{"name":"Case detail","request":{"method":"GET","url":"{{baseUrl}}/api/cases/{{caseId}}"}},{"name":"Risk","request":{"method":"GET","url":"{{baseUrl}}/api/cases/{{caseId}}/risk"}},{"name":"Recommendation","request":{"method":"GET","url":"{{baseUrl}}/api/cases/{{caseId}}/recommendation"}}]}
-
+{
+  "info": {
+    "name": "CarePulse API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8000"
+    },
+    {
+      "key": "caseId",
+      "value": "CP-00001"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Health endpoint returns 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Health response is ok\", function () {",
+              "    pm.expect(pm.response.json().status).to.eql(\"ok\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Overview",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/metrics/overview"
+      }
+    },
+    {
+      "name": "Case detail",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/cases/{{caseId}}"
+      }
+    },
+    {
+      "name": "Risk",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/cases/{{caseId}}/risk"
+      }
+    },
+    {
+      "name": "Recommendation",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/cases/{{caseId}}/recommendation"
+      }
+    }
+  ]
+}
