@@ -7,5 +7,6 @@ public class HomePage {
     public void open(){driver.get("http://127.0.0.1:8000/");}
     public String title(){return driver.getTitle();}
     public boolean dashboardLinkVisible(){return driver.findElements(By.linkText("Executive dashboard")).size()>0;}
+    public String dashboardLinkTarget(){return driver.findElement(By.linkText("Executive dashboard")).getAttribute("href");}
 }
 
