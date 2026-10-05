@@ -40,6 +40,26 @@ def test_role_restriction_and_validation(monkeypatch):
         assert client.post("/api/events", json={"case_id": "CP-00006", "event_type": "CASE_OPENED", "metadata": "bad"}).status_code == 422
 
 
+def test_agent_case_list_only_shows_owned_cases(monkeypatch):
+    monkeypatch.setattr(settings, "app_env", "production")
+    with TestClient(app, base_url="https://testserver") as client:
+        login(client, "agent@carepulse.demo")
+        with SessionLocal() as db:
+            agent = db.query(User).filter_by(email="agent@carepulse.demo").one()
+            assigned_case = db.query(Case).filter_by(current_owner=agent.agent_id).first()
+            other_case = db.query(Case).filter(Case.current_owner != agent.agent_id).first()
+            assert assigned_case is not None
+            assert other_case is not None
+            assigned_case_id = assigned_case.case_id
+            other_case_id = other_case.case_id
+
+        response = client.get("/cases")
+
+        assert response.status_code == 200
+        assert assigned_case_id in response.text
+        assert other_case_id not in response.text
+
+
 def test_agent_cannot_open_unassigned_assistant_case(monkeypatch):
     monkeypatch.setattr(settings, "app_env", "production")
     with TestClient(app, base_url="https://testserver") as client:
@@ -78,3 +98,4 @@ def test_unknown_page_has_friendly_error():
         response = client.get("/page-that-does-not-exist")
         assert response.status_code == 404
         assert "not available" in response.text.lower()
+
