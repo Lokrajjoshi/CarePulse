@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from types import SimpleNamespace
 
-from src.metrics import minutes_between
+from src.metrics import customer_effort, minutes_between
 from src.risk_engine import experience_risk
 from src.sentiment import classify
 
@@ -31,3 +31,29 @@ def test_missed_promise_adds_explainable_risk():
 
     assert risk["score"] == 24
     assert {"name": "Missed promised update", "points": 24} in risk["drivers"]
+
+
+def test_transfers_add_customer_effort():
+    now = datetime(2026, 10, 6)
+    base_case = SimpleNamespace(
+        created_at=now,
+        resolved_at=now + timedelta(minutes=10),
+        interactions=[],
+        promises=[],
+        feedback=None,
+    )
+    transferred_case = SimpleNamespace(
+        created_at=now,
+        resolved_at=now + timedelta(minutes=10),
+        interactions=[
+            SimpleNamespace(transfer_flag=True, repeat_explanation_flag=False),
+            SimpleNamespace(transfer_flag=True, repeat_explanation_flag=False),
+        ],
+        promises=[],
+        feedback=None,
+    )
+
+    effort_without_transfers = customer_effort(base_case)
+    effort_with_transfers = customer_effort(transferred_case)
+
+    assert effort_with_transfers - effort_without_transfers == 4.0
