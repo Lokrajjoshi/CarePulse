@@ -46,8 +46,18 @@ def test_transfers_add_customer_effort():
         created_at=now,
         resolved_at=now + timedelta(minutes=10),
         interactions=[
-            SimpleNamespace(transfer_flag=True, repeat_explanation_flag=False),
-            SimpleNamespace(transfer_flag=True, repeat_explanation_flag=False),
+            SimpleNamespace(
+                timestamp=now,
+                transfer_flag=True,
+                repeat_explanation_flag=False,
+                meaningful_update_flag=False,
+            ),
+            SimpleNamespace(
+                timestamp=now + timedelta(minutes=1),
+                transfer_flag=True,
+                repeat_explanation_flag=False,
+                meaningful_update_flag=False,
+            ),
         ],
         promises=[],
         feedback=None,
