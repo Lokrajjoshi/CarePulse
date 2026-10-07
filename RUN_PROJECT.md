@@ -2,10 +2,9 @@
 
 ## A. Easy Demo Mode
 
-One-time setup: open PowerShell and run:
+One-time setup: open PowerShell in the CarePulse project folder and run:
 
 ```powershell
-cd "C:\Users\Namraj Joshi\Desktop\CarePulse"
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
@@ -31,9 +30,9 @@ Start the application:
 python -m uvicorn app.main:app --reload
 ```
 
-Open `http://127.0.0.1:8000`. Use `/dashboard`, `/story`, `/assistant`, `/simulator`, `/cases`, `/docs`, and a case link. Stop with `Ctrl+C`. The reload server must be started again after you close PowerShell. `START_CAREPULSE.ps1` automates dependency checks, database preparation, and launch without resetting records. `RESET_DEMO.ps1` deliberately regenerates the fixed-seed demo data.
+After Uvicorn reports that the server has started, open the local address shown in the terminal. Use `/dashboard`, `/story`, `/assistant`, `/simulator`, `/cases`, `/docs`, and a case link. Stop with `Ctrl+C`. The reload server must be started again after you close PowerShell. `START_CAREPULSE.ps1` automates dependency checks, database preparation, and launch without resetting records. `RESET_DEMO.ps1` deliberately regenerates the fixed-seed demo data.
 
-If PowerShell blocks activation, run `Set-ExecutionPolicy -Scope Process Bypass` in that window. If `ModuleNotFoundError` appears, activate `.venv` and rerun the install command. If port 8000 is busy, use `python -m uvicorn app.main:app --reload --port 8001`.
+If PowerShell blocks activation, run `Set-ExecutionPolicy -Scope Process Bypass` in that window. If `ModuleNotFoundError` appears, activate `.venv` and rerun the install command. If the default port is busy, use `python -m uvicorn app.main:app --reload --port 8001`.
 
 ## B. PostgreSQL Mode
 
@@ -49,7 +48,7 @@ Install Java 17+, Maven, and Chrome. Start CarePulse first. From `selenium-tests
 
 ## E. Postman
 
-Install Postman, import `postman\CarePulse.postman_collection.json`, set `baseUrl` to `http://127.0.0.1:8000`, and send the health, metrics, case, risk, recommendation, assistant, and event requests.
+Install Postman, import `postman\CarePulse.postman_collection.json`, set `baseUrl` to the local address where CarePulse is running, and send the health, metrics, case, risk, recommendation, assistant, and event requests.
 
 ## F. Azure / Cloud
 

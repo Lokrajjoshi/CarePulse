@@ -63,7 +63,7 @@ The local reference version proves the product logic using synthetic data:
 - Business recommendations and experimental ML benchmark
 - Postman, SQL, Power BI, Selenium, and Azure preparation assets
 
-It does **not** claim to be connected to Dell or any real company. It does not use real customer data or external AI APIs.
+It does **not** claim to be connected to Dell or any real company. It does not use real customer data or external service APIs.
 
 ## Technology summary
 
@@ -114,5 +114,5 @@ It does **not** claim to be connected to Dell or any real company. It does not u
 
 ## One-minute explanation
 
-> CarePulse is a customer-experience intelligence layer for existing support systems. It looks at operational signals such as silent waiting, missed promises, repeat contact, transfers, and sentiment while a case is still active. It prioritizes which customers need attention, explains why, recommends a transparent recovery action, and compares the early signal with the later survey outcome. The prototype runs locally on synthetic data, while the production design supports private internal deployment and secure connectors rather than sending confidential conversations to a public AI tool.
+> CarePulse is a customer-experience intelligence layer for existing support systems. It looks at operational signals such as silent waiting, missed promises, repeat contact, transfers, and sentiment while a case is still active. It prioritizes which customers need attention, explains why, recommends a transparent recovery action, and compares the early signal with the later survey outcome. The prototype runs locally on synthetic data, while the production design supports private internal deployment and secure connectors rather than sending confidential conversations to a public service.
 

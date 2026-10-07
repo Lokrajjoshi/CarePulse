@@ -11,12 +11,12 @@ CarePulse is a synthetic, industry-neutral customer-experience intervention prot
 - Offline CX Intelligence Assistant, sentiment signal workflow, and event-driven Integration Simulator.
 - Signed demo login with Admin, CX Manager, Business Manager, Agent, and Customer roles.
 - Organisation-scoped records, configurable risk thresholds, audit events, friendly error states, tracked recovery actions, and CI checks.
-- SQL learning queries, analytics exports, Power BI model/DAX/setup assets, Postman collection, Java/Selenium starter suite, and Azure architecture notes.
+- SQL learning queries, analytics exports, Power BI model/DAX/setup assets, Postman collection, Java/Selenium starter suite, and architecture notes.
 
 ## Quick setup
 
 ```powershell
-cd "C:\Users\Namraj Joshi\Desktop\CarePulse"
+cd CarePulse
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
@@ -25,19 +25,21 @@ python -m pytest
 python -m uvicorn app.main:app --reload
 ```
 
-Open [http://127.0.0.1:8000](http://127.0.0.1:8000). Full beginner instructions are in `RUN_PROJECT.md`.
+After the server starts successfully, open the local address shown in the terminal. Full beginner instructions are in `RUN_PROJECT.md`.
 
 ## Demo access
 
-All demo accounts use the password `carepulse-demo` and are limited to synthetic data: `admin@carepulse.demo`, `cx.manager@carepulse.demo`, `business.manager@carepulse.demo`, `agent@carepulse.demo`, and `customer@carepulse.demo`.
+CarePulse includes synthetic demo accounts for the main roles. Login details and local demo instructions are documented in `RUN_PROJECT.md`. These accounts only access synthetic data and must not be used for real customer information.
 
-The Admin role can open **Organisation settings** and adjust the medium and high risk thresholds. The Agent workspace records recovery actions with owner, status, outcome, and follow-up notes. These demo accounts are not suitable for real customer data.
+The Admin role can open **Organisation settings** and adjust the medium and high risk thresholds. The Agent workspace records recovery actions with owner, status, outcome, and follow-up notes.
 
 ## Production-readiness status
 
-CarePulse is a production-oriented foundation, not a claim that a production deployment is complete. It has signed sessions, role checks, tenant-scoped queries, validation, audit records, configurable thresholds, PostgreSQL-compatible SQLAlchemy configuration, reports, and automated tests. Before handling real customer information, an organisation still needs managed PostgreSQL, a managed identity provider or hardened account lifecycle, encryption and key management, backups and restore drills, monitoring and alerting, rate limiting at the edge, webhook authentication, retention policy, security review, and validation against labelled conversations and survey outcomes.
+CarePulse is a production-oriented foundation, not a claim that a production deployment is complete. It has signed sessions, role checks, tenant-scoped queries, validation, audit records, configurable thresholds, PostgreSQL-compatible SQLAlchemy configuration, reports, and automated tests.
 
-Set `APP_ENV=production`, provide a long random `SECRET_KEY`, and set `DATABASE_URL` to the managed PostgreSQL connection string. Never commit these values. Render can continue running the synthetic free demo, but the free instance may sleep after inactivity and should not be treated as an always-on production service.
+Before handling real customer information, an organisation still needs managed PostgreSQL, a managed identity provider or hardened account lifecycle, encryption and key management, backups and restore drills, monitoring and alerting, rate limiting at the edge, webhook authentication, retention policy, security review, and validation against labelled conversations and survey outcomes.
+
+Set `APP_ENV=production`, provide a long random `SECRET_KEY`, and set `DATABASE_URL` to the managed PostgreSQL connection string. Never commit these values.
 
 ## Important limitations
 
@@ -49,7 +51,7 @@ Browser -> FastAPI/Jinja -> SQLAlchemy -> SQLite or PostgreSQL. Analytics module
 
 ## Zero-cost baseline
 
-The complete local project runs for free with Python, FastAPI, SQLite, and open-source libraries. It does not require an external LLM or paid API. See `docs/ZERO_COST_ARCHITECTURE.md` and `docs/PUBLIC_DEMO.md`.
+The complete local project runs for free with Python, FastAPI, SQLite, and open-source libraries. It does not require an external model or paid API. See `docs/ZERO_COST_ARCHITECTURE.md` and `docs/PUBLIC_DEMO.md`.
 
 ## Metrics and security notes
 

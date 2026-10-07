@@ -13,13 +13,13 @@ CarePulse can be built, tested, demonstrated, and explored locally without a pay
 - SQLite demo database
 - Fixed-seed synthetic data generator
 - Rule-based risk, effort, promise, recovery, and care-action logic
-- Local sentiment baseline; no OpenAI, Anthropic, Gemini, or other LLM API
+- Local sentiment baseline using rules and VADER
 - Local browser UI, REST API, Swagger, Postman collection, and SQL files
 - Java/Selenium/Maven assets, when the free open-source tools are installed locally
 
 ## Privacy and zero-cost intelligence
 
-The baseline assistant is deterministic and grounded in CarePulse metrics. It does not call an external AI service. The sentiment baseline uses local rules and VADER. A real organization could run the same service inside its own private network and store derived signals rather than raw messages.
+The baseline assistant is deterministic and grounded in CarePulse metrics. It does not call an external service. The sentiment baseline uses local rules and VADER. A real organization could run the same service inside its own private network and store derived signals rather than raw messages.
 
 ## Public deployment
 

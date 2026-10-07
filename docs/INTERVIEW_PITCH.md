@@ -18,7 +18,7 @@ No. It is an intelligence layer that can integrate with existing chat, email, vo
 
 ## How did you handle privacy?
 
-The prototype uses synthetic data and makes no external AI calls. A production implementation could run inside the company's private environment, use metadata or redacted text, retain derived signals instead of raw conversations, and apply authentication, access control, auditing, and retention policies.
+The prototype uses synthetic data and makes no calls to external services. A production implementation could run inside the company's private environment, use metadata or redacted text, retain derived signals instead of raw conversations, and apply authentication, access control, auditing, and retention policies.
 
 ## What did you learn technically?
 

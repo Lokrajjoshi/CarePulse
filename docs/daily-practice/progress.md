@@ -5,6 +5,7 @@ Use this log to record small daily improvements and what was learned from each o
 | Day | Date | Area | What changed | What I learned | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 1 | 2026-09-27 | Project motivation | Added daily practice structure and project learning notes | CarePulse connects support experience with customer risk, recovery, and follow-up workflows | Day 1: add daily practice plan |
+| 11 | 2026-10-07 | Follow-up ownership | Added a clear agent-page view for case owner, latest action owner, status, follow-up note, and missing review point | Existing intervention records can explain ownership, while the current model does not yet store a review date | Improve follow-up ownership clarity |
 
 ## Notes format
 
