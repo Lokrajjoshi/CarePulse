@@ -15,3 +15,5 @@ Keep each note short and honest:
 - Which part of the project did it involve?
 - Which tool, language, or framework did it help you understand?
 - How would you explain it in an interview?
+
+| 12 | 2026-10-08 | Risk explanation | Clarified why a case received its risk band by showing the evidence signals and point contributions together | Risk decisions are easier to review when the scoring signals are visible beside the band | Explain risk band drivers |
