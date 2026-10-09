@@ -17,3 +17,5 @@ Keep each note short and honest:
 - How would you explain it in an interview?
 
 | 12 | 2026-10-08 | Risk explanation | Clarified why a case received its risk band by showing the evidence signals and point contributions together | Risk decisions are easier to review when the scoring signals are visible beside the band | Explain risk band drivers |
+
+| 13 | 2026-10-09 | Dashboard usefulness | Added a threshold-aware explanation and a direct link from the high-risk count to the risk monitor | Dashboard metrics are more useful when their meaning and next action are visible together | Make the risk count actionable |
