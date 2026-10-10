@@ -32,6 +32,13 @@ def test_risk_monitor_uses_shared_wait_metric_and_has_empty_state():
     assert "No high-risk journeys" in response.text or " min</td>" in response.text
 
 
+def test_dashboard_high_risk_metric_links_to_risk_monitor():
+    response = client.get("/dashboard")
+    assert response.status_code == 200
+    assert 'href="/risk-monitor"' in response.text
+    assert "Review high-risk cases" in response.text
+
+
 def test_health_and_assistant_api():
     assert client.get("/health").json()["status"] == "ok"
     assert client.get("/favicon.ico").status_code == 200
