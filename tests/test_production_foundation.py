@@ -12,6 +12,14 @@ def test_demo_users_can_browse_without_credentials():
         assert client.get("/api/cases").status_code == 200
 
 
+def test_risk_monitor_explains_the_next_action():
+    with TestClient(app, base_url="https://testserver") as client:
+        response = client.get("/risk-monitor")
+        assert response.status_code == 200
+        assert "highest-risk journeys first" in response.text
+        assert "signals, owner, and recovery actions" in response.text
+
+
 def test_production_users_are_redirected(monkeypatch):
     monkeypatch.setattr(settings, "app_env", "production")
     with TestClient(app, base_url="https://testserver") as client:
