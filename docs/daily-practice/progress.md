@@ -22,3 +22,5 @@ Keep each note short and honest:
 
 
 | 14 | 2026-10-10 | Dashboard action validation | Added a test confirming the dashboard's high-risk action links users to the risk monitor | Small UI actions are safer when important navigation is covered by an automated test | Day 14: test dashboard risk monitor action |
+
+| 15 | 2026-10-11 | Risk-monitor clarity | Explained that the queue starts with the highest-risk journeys and added a focused test for the manager's next action | A risk list is more useful when its priority and next step are clear before someone opens a case | Day 15: clarify the risk-monitor queue |
