@@ -90,6 +90,16 @@ def test_settings_and_action_tracking():
         assert action.json()["status"] == "planned"
 
 
+def test_equal_risk_thresholds_are_rejected():
+    with TestClient(app) as client:
+        login(client, "admin@carepulse.demo")
+        response = client.post(
+            "/api/settings/thresholds",
+            json={"medium_threshold": 40, "high_threshold": 40},
+        )
+        assert response.status_code == 422
+
+
 def test_recovery_action_rejects_unknown_status():
     with TestClient(app) as client:
         login(client, "admin@carepulse.demo")
@@ -106,4 +116,3 @@ def test_unknown_page_has_friendly_error():
         response = client.get("/page-that-does-not-exist")
         assert response.status_code == 404
         assert "not available" in response.text.lower()
-
