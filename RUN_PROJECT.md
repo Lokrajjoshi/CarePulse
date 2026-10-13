@@ -52,7 +52,7 @@ Install Postman, import `postman\CarePulse.postman_collection.json`, set `baseUr
 
 ## F. Azure / Cloud
 
-Cloud deployment is optional and needs an Azure account, Azure Database for PostgreSQL, an App Service or Container Apps resource, and secrets configured as environment variables. Local SQLite demo mode does not depend on Azure. Read `cloud\azure\DEPLOYMENT_GUIDE.md`.
+Cloud deployment is optional and needs an Azure account, Azure Database for PostgreSQL, an App Service or Container Apps resource, and secrets configured as environment variables. Set `APP_ENV=production` and provide a long, unique `SECRET_KEY`; never use the demo key outside local demo mode or commit a real value to the repository. Local SQLite demo mode does not depend on Azure. Read `cloud\azure\DEPLOYMENT_GUIDE.md`.
 
 ## G. GitHub and future changes
 
