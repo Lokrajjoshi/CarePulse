@@ -12,6 +12,8 @@ Use this log to record small daily improvements and what was learned from each o
 | 15 | 2026-10-11 | Risk-monitor clarity | Explained that the queue starts with the highest-risk journeys and added a focused test for the manager's next action | A risk list is more useful when its priority and next step are clear before someone opens a case | Day 15: clarify the risk-monitor queue |
 | 16 | 2026-10-12 | Backend validation | Added a focused test confirming that equal medium and high risk thresholds are rejected | Risk bands need an unambiguous ordering so managers can trust the configuration | Day 16: test equal risk thresholds |
 
+| 17 | 2026-10-13 | Deployment readiness | Clarified the production session-signing-key requirement in the run guide | A demo secret is acceptable only for local synthetic demo use; production needs a unique value outside source control | Day 17: clarify production secret setup |
+
 ## Notes format
 
 Keep each note short and honest:
