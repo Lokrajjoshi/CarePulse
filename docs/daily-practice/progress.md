@@ -14,6 +14,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 17 | 2026-10-13 | Deployment readiness | Clarified the production session-signing-key requirement in the run guide | A demo secret is acceptable only for local synthetic demo use; production needs a unique value outside source control | Day 17: clarify production secret setup |
 
+| 18 | 2026-10-14 | Deployment readiness | Made the environment example clearly separate demo settings from production-only values | Environment templates should guide safe setup without containing a real secret | Day 18: make environment setup safer |
+
 ## Notes format
 
 Keep each note short and honest:
