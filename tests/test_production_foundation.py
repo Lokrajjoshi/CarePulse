@@ -116,3 +116,19 @@ def test_unknown_page_has_friendly_error():
         response = client.get("/page-that-does-not-exist")
         assert response.status_code == 404
         assert "not available" in response.text.lower()
+
+
+def test_login_rejects_an_external_next_path():
+    with TestClient(app) as client:
+        response = client.post(
+            "/login",
+            data={
+                "email": "admin@carepulse.demo",
+                "password": "carepulse-demo",
+                "next": "https://outside.example",
+            },
+            follow_redirects=False,
+        )
+
+        assert response.status_code == 303
+        assert response.headers["location"] == "/dashboard"
