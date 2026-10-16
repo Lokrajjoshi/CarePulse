@@ -132,3 +132,19 @@ def test_login_rejects_an_external_next_path():
 
         assert response.status_code == 303
         assert response.headers["location"] == "/dashboard"
+
+
+def test_login_accepts_a_safe_internal_next_path():
+    with TestClient(app) as client:
+        response = client.post(
+            "/login",
+            data={
+                "email": "admin@carepulse.demo",
+                "password": "carepulse-demo",
+                "next": "/insights?days=30",
+            },
+            follow_redirects=False,
+        )
+
+        assert response.status_code == 303
+        assert response.headers["location"] == "/insights?days=30"
