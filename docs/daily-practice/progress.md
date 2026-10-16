@@ -18,6 +18,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 19 | 2026-10-15 | Login safety | Added a regression test confirming that login ignores an external redirect target | Login return paths need to stay inside the application to protect users from misleading redirects | Day 19: test safe login redirects |
 
+| 20 | 2026-10-16 | Login safety | Added a regression test confirming a valid internal login return path with query parameters is preserved | Safe redirect checks should block external destinations without breaking legitimate navigation inside the app | Day 20: test safe internal login redirect |
+
 ## Notes format
 
 Keep each note short and honest:
