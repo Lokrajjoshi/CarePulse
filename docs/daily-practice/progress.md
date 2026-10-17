@@ -20,6 +20,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 20 | 2026-10-16 | Login safety | Added a regression test confirming a valid internal login return path with query parameters is preserved | Safe redirect checks should block external destinations without breaking legitimate navigation inside the app | Day 20: test safe internal login redirect |
 
+| 21 | 2026-10-17 | Login safety | Hardened login return-path validation to reject ambiguous backslash-based paths and added a regression test | Redirect validation should allow normal internal navigation while rejecting path forms that browsers or proxies may interpret unexpectedly | Day 21: harden login return paths |
+
 ## Notes format
 
 Keep each note short and honest:
