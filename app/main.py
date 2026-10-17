@@ -232,7 +232,9 @@ def audit(db: Session, request: Request, action: str, resource: str, metadata: d
     db.commit()
 
 def safe_next(value: str) -> str:
-    return value if value.startswith("/") and not value.startswith("//") else "/dashboard"
+    if not value.startswith("/") or value.startswith("//") or "\\" in value:
+        return "/dashboard"
+    return value
 
 class EventIn(BaseModel):
     case_id: str = Field(min_length=3, max_length=40)
