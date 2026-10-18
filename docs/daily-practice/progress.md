@@ -22,6 +22,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 21 | 2026-10-17 | Login safety | Hardened login return-path validation to reject ambiguous backslash-based paths and added a regression test | Redirect validation should allow normal internal navigation while rejecting path forms that browsers or proxies may interpret unexpectedly | Day 21: harden login return paths |
 
+| 22 | 2026-10-18 | Login safety review | Added a regression test for protocol-relative login return paths | A path starting with two slashes can be interpreted as an external destination and must not be trusted after login | Day 22: test protocol-relative login redirect rejection |
+
 ## Notes format
 
 Keep each note short and honest:
