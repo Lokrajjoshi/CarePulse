@@ -24,6 +24,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 22 | 2026-10-18 | Login safety review | Added a regression test for protocol-relative login return paths | A path starting with two slashes can be interpreted as an external destination and must not be trusted after login | Day 22: test protocol-relative login redirect rejection |
 
+| 23 | 2026-10-19 | Login safety | Rejected control characters in login return paths and added a regression test | Even internal-looking redirect values should not contain line breaks or other control characters | Day 23: reject control characters in login return paths |
+
 ## Notes format
 
 Keep each note short and honest:
