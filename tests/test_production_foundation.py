@@ -180,3 +180,19 @@ def test_login_rejects_protocol_relative_return_path():
 
         assert response.status_code == 303
         assert response.headers["location"] == "/dashboard"
+
+
+def test_login_rejects_control_character_return_path():
+    with TestClient(app) as client:
+        response = client.post(
+            "/login",
+            data={
+                "email": "admin@carepulse.demo",
+                "password": "carepulse-demo",
+                "next": "/dashboard\nLocation: //outside.example",
+            },
+            follow_redirects=False,
+        )
+
+        assert response.status_code == 303
+        assert response.headers["location"] == "/dashboard"
