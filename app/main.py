@@ -232,7 +232,8 @@ def audit(db: Session, request: Request, action: str, resource: str, metadata: d
     db.commit()
 
 def safe_next(value: str) -> str:
-    if not value.startswith("/") or value.startswith("//") or "\\" in value:
+    if (not value.startswith("/") or value.startswith("//") or "\\" in value
+            or any(ord(char) < 32 or ord(char) == 127 for char in value)):
         return "/dashboard"
     return value
 
