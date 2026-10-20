@@ -196,3 +196,24 @@ def test_login_rejects_control_character_return_path():
 
         assert response.status_code == 303
         assert response.headers["location"] == "/dashboard"
+
+
+def test_production_login_cookie_has_security_flags(monkeypatch):
+    monkeypatch.setattr(settings, "app_env", "production")
+
+    with TestClient(app, base_url="https://testserver") as client:
+        response = client.post(
+            "/login",
+            data={
+                "email": "admin@carepulse.demo",
+                "password": "carepulse-demo",
+            },
+            follow_redirects=False,
+        )
+
+        assert response.status_code == 303
+
+        cookie = response.headers["set-cookie"].lower()
+        assert "httponly" in cookie
+        assert "secure" in cookie
+        assert "samesite=lax" in cookie
