@@ -26,6 +26,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 23 | 2026-10-19 | Login safety | Rejected control characters in login return paths and added a regression test | Even internal-looking redirect values should not contain line breaks or other control characters | Day 23: reject control characters in login return paths |
 
+| 24 | 2026-10-20 | Session security | Added a production-mode test confirming login cookies include HttpOnly, Secure, and SameSite=Lax flags | Authentication is safer when session-cookie protections are enforced and covered by regression tests | Day 24: test production session cookie security |
+
 ## Notes format
 
 Keep each note short and honest:
