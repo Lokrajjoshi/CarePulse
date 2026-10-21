@@ -217,3 +217,20 @@ def test_production_login_cookie_has_security_flags(monkeypatch):
         assert "httponly" in cookie
         assert "secure" in cookie
         assert "samesite=lax" in cookie
+
+
+def test_logout_ends_production_session(monkeypatch):
+    monkeypatch.setattr(settings, "app_env", "production")
+
+    with TestClient(app, base_url="https://testserver") as client:
+        login(client, "admin@carepulse.demo")
+
+        assert client.get("/dashboard").status_code == 200
+
+        logout_response = client.post("/logout", follow_redirects=False)
+        assert logout_response.status_code == 303
+        assert logout_response.headers["location"] == "/login"
+
+        dashboard_response = client.get("/dashboard", follow_redirects=False)
+        assert dashboard_response.status_code == 303
+        assert dashboard_response.headers["location"].startswith("/login")
