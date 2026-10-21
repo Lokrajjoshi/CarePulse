@@ -28,6 +28,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 24 | 2026-10-20 | Session security | Added a production-mode test confirming login cookies include HttpOnly, Secure, and SameSite=Lax flags | Authentication is safer when session-cookie protections are enforced and covered by regression tests | Day 24: test production session cookie security |
 
+| 25 | 2026-10-21 | Session security | Added a production-mode logout test confirming that signing out redirects to login and protected pages require authentication again | Logout is only complete when the session is actually cleared and protected pages become inaccessible | Day 25: test production logout session ending |
+
 ## Notes format
 
 Keep each note short and honest:
