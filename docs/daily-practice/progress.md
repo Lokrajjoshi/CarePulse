@@ -30,6 +30,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 25 | 2026-10-21 | Session security | Added a production-mode logout test confirming that signing out redirects to login and protected pages require authentication again | Logout is only complete when the session is actually cleared and protected pages become inaccessible | Day 25: test production logout session ending |
 
+| 26 | 2026-10-22 | Session security | Added a regression test confirming logout expires the session cookie with Max-Age=0 | Logout should invalidate the browser session cookie, not only redirect the user away from a protected page | Day 26: test logout cookie expiry |
+
 ## Notes format
 
 Keep each note short and honest:
