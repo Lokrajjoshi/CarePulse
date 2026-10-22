@@ -234,3 +234,16 @@ def test_logout_ends_production_session(monkeypatch):
         dashboard_response = client.get("/dashboard", follow_redirects=False)
         assert dashboard_response.status_code == 303
         assert dashboard_response.headers["location"].startswith("/login")
+
+
+def test_logout_expires_session_cookie(monkeypatch):
+    monkeypatch.setattr(settings, "app_env", "production")
+
+    with TestClient(app, base_url="https://testserver") as client:
+        login(client, "admin@carepulse.demo")
+
+        response = client.post("/logout", follow_redirects=False)
+
+        assert response.status_code == 303
+        cookie = response.headers["set-cookie"].lower()
+        assert "max-age=0" in cookie
