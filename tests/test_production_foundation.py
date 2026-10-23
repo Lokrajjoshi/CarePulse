@@ -247,3 +247,20 @@ def test_logout_expires_session_cookie(monkeypatch):
         assert response.status_code == 303
         cookie = response.headers["set-cookie"].lower()
         assert "max-age=0" in cookie
+
+
+def test_failed_login_does_not_set_session_cookie(monkeypatch):
+    monkeypatch.setattr(settings, "app_env", "production")
+
+    with TestClient(app, base_url="https://testserver") as client:
+        response = client.post(
+            "/login",
+            data={
+                "email": "admin@carepulse.demo",
+                "password": "wrong-password",
+            },
+            follow_redirects=False,
+        )
+
+        assert response.status_code == 401
+        assert "set-cookie" not in response.headers
