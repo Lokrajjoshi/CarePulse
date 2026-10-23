@@ -32,6 +32,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 26 | 2026-10-22 | Session security | Added a regression test confirming logout expires the session cookie with Max-Age=0 | Logout should invalidate the browser session cookie, not only redirect the user away from a protected page | Day 26: test logout cookie expiry |
 
+| 27 | 2026-10-23 | Session security | Added a production-mode regression test confirming that a failed login does not issue a session cookie | Authentication failures should not create browser session state | Day 27: test failed login session safety |
+
 ## Notes format
 
 Keep each note short and honest:
