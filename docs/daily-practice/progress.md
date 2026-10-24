@@ -34,6 +34,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 27 | 2026-10-23 | Session security | Added a production-mode regression test confirming that a failed login does not issue a session cookie | Authentication failures should not create browser session state | Day 27: test failed login session safety |
 
+| 28 | 2026-10-24 | Login reliability | Added a production-mode regression test confirming login normalizes email case and surrounding spaces | Authentication should accept equivalent email input without weakening password checks or session controls | Day 28: test normalized login email |
+
 ## Notes format
 
 Keep each note short and honest:
