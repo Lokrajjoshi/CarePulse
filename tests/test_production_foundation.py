@@ -264,3 +264,20 @@ def test_failed_login_does_not_set_session_cookie(monkeypatch):
 
         assert response.status_code == 401
         assert "set-cookie" not in response.headers
+
+
+def test_login_normalizes_email_input(monkeypatch):
+    monkeypatch.setattr(settings, "app_env", "production")
+
+    with TestClient(app, base_url="https://testserver") as client:
+        response = client.post(
+            "/login",
+            data={
+                "email": "  ADMIN@CAREPULSE.DEMO  ",
+                "password": "carepulse-demo",
+            },
+            follow_redirects=False,
+        )
+
+        assert response.status_code == 303
+        assert response.headers["location"] == "/dashboard"
