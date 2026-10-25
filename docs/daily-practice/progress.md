@@ -36,6 +36,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 28 | 2026-10-24 | Login reliability | Added a production-mode regression test confirming login normalizes email case and surrounding spaces | Authentication should accept equivalent email input without weakening password checks or session controls | Day 28: test normalized login email |
 
+| 29 | 2026-10-25 | Authentication safety | Added a production-mode regression test confirming inactive users cannot create a session even with the correct password | Account status must be enforced as part of authentication, not only password verification | Day 29: test inactive user login rejection |
+
 ## Notes format
 
 Keep each note short and honest:
