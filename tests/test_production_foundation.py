@@ -281,3 +281,32 @@ def test_login_normalizes_email_input(monkeypatch):
 
         assert response.status_code == 303
         assert response.headers["location"] == "/dashboard"
+
+
+def test_inactive_user_cannot_login(monkeypatch):
+    monkeypatch.setattr(settings, "app_env", "production")
+
+    with SessionLocal() as db:
+        user = db.query(User).filter_by(email="admin@carepulse.demo").one()
+        original_state = user.is_active
+        user.is_active = False
+        db.commit()
+
+    try:
+        with TestClient(app, base_url="https://testserver") as client:
+            response = client.post(
+                "/login",
+                data={
+                    "email": "admin@carepulse.demo",
+                    "password": "carepulse-demo",
+                },
+                follow_redirects=False,
+            )
+
+            assert response.status_code == 401
+            assert "set-cookie" not in response.headers
+    finally:
+        with SessionLocal() as db:
+            user = db.query(User).filter_by(email="admin@carepulse.demo").one()
+            user.is_active = original_state
+            db.commit()
