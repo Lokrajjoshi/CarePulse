@@ -38,6 +38,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 29 | 2026-10-25 | Authentication safety | Added a production-mode regression test confirming inactive users cannot create a session even with the correct password | Account status must be enforced as part of authentication, not only password verification | Day 29: test inactive user login rejection |
 
+| 30 | 2026-10-26 | Authentication safety | Added a production-mode regression test confirming an already logged-in user loses access once the account becomes inactive | Session checks should enforce current account status on every protected request, not only at login time | Day 30: test inactive session rejection |
+
 ## Notes format
 
 Keep each note short and honest:
