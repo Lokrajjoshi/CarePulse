@@ -310,3 +310,27 @@ def test_inactive_user_cannot_login(monkeypatch):
             user = db.query(User).filter_by(email="admin@carepulse.demo").one()
             user.is_active = original_state
             db.commit()
+
+
+def test_inactive_user_existing_session_is_rejected(monkeypatch):
+    monkeypatch.setattr(settings, "app_env", "production")
+
+    with TestClient(app, base_url="https://testserver") as client:
+        login(client, "admin@carepulse.demo")
+
+        with SessionLocal() as db:
+            user = db.query(User).filter_by(email="admin@carepulse.demo").one()
+            original_state = user.is_active
+            user.is_active = False
+            db.commit()
+
+        try:
+            response = client.get("/dashboard", follow_redirects=False)
+
+            assert response.status_code == 303
+            assert response.headers["location"].startswith("/login")
+        finally:
+            with SessionLocal() as db:
+                user = db.query(User).filter_by(email="admin@carepulse.demo").one()
+                user.is_active = original_state
+                db.commit()
