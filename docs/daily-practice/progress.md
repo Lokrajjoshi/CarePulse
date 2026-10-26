@@ -5,6 +5,14 @@ Use this log to record small daily improvements and what was learned from each o
 | Day | Date | Area | What changed | What I learned | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 1 | 2026-09-27 | Project motivation | Added daily practice structure and project learning notes | CarePulse connects support experience with customer risk, recovery, and follow-up workflows | Day 1: add daily practice plan |
+| 2 | 2026-09-29 | Risk scoring | Added a test for missed-promise risk scoring | Risk logic is safer when important scoring behaviour is covered by a focused test | Day 2: test missed-promise risk scoring |
+| 3 | 2026-09-29 | Risk queue | Showed case owners in the risk queue | Risk lists are more actionable when ownership is visible | Day 3: show case owners in risk queue |
+| 4 | 2026-09-30 | Recovery actions | Added a test for recovery-action status validation | Workflow actions need validation so unsupported states are rejected | Day 4: test recovery action status validation |
+| 5 | 2026-10-01 | Promise reliability | Clarified the promise-reliability metric | A metric is more useful when users can understand what contributes to it | Day 5: explain promise reliability metric |
+| 6 | 2026-10-02 | Journey signals | Clarified how sentiment is used as a journey signal | Signals should be explained as supporting evidence rather than treated as unquestionable truth | Day 6: clarify sentiment journey signals |
+| 7 | 2026-10-03 | Data integrity | Clarified that demo records are synthetic | Synthetic data is suitable for product demonstration but not evidence of real customer behaviour | Day 7: clarify synthetic demo data handling |
+| 8 | 2026-10-04 | Health check | Added a health-endpoint check | A simple health check helps verify that the service is available before deeper testing | Day 8: add health endpoint check |
+| 10 | 2026-10-05 | Agent workflow | Added a test for agent case-list filtering | Filters that affect day-to-day workflow should be covered by regression tests | Day 10: test agent case list filtering |
 | 11 | 2026-10-07 | Follow-up ownership | Added a clear agent-page view for case owner, latest action owner, status, follow-up note, and missing review point | Existing intervention records can explain ownership, while the current model does not yet store a review date | Improve follow-up ownership clarity |
 | 12 | 2026-10-08 | Risk explanation | Clarified why a case received its risk band by showing the evidence signals and point contributions together | Risk decisions are easier to review when the scoring signals are visible beside the band | Explain risk band drivers |
 | 13 | 2026-10-09 | Dashboard usefulness | Added a threshold-aware explanation and a direct link from the high-risk count to the risk monitor | Dashboard metrics are more useful when their meaning and next action are visible together | Make the risk count actionable |
@@ -39,6 +47,10 @@ Use this log to record small daily improvements and what was learned from each o
 | 29 | 2026-10-25 | Authentication safety | Added a production-mode regression test confirming inactive users cannot create a session even with the correct password | Account status must be enforced as part of authentication, not only password verification | Day 29: test inactive user login rejection |
 
 | 30 | 2026-10-26 | Authentication safety | Added a production-mode regression test confirming an already logged-in user loses access once the account becomes inactive | Session checks should enforce current account status on every protected request, not only at login time | Day 30: test inactive session rejection |
+
+## Historical numbering note
+
+The early Git history contains a numbering gap: no verified `Day 9` commit was found during the repository audit, and an earlier `Day 11: test transfer effort scoring` commit exists on 2026-10-06 while the progress log already used Day 11 for the 2026-10-07 follow-up-ownership work. This log does not invent or renumber historical work. The inconsistency is documented here and future day numbering should remain consistent from the current sequence onward.
 
 ## Notes format
 
