@@ -48,6 +48,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 30 | 2026-10-26 | Authentication safety | Added a production-mode regression test confirming an already logged-in user loses access once the account becomes inactive | Session checks should enforce current account status on every protected request, not only at login time | Day 30: test inactive session rejection |
 
+| 31 | 2026-10-27 | Queue clarity | Showed a separate promise state when no commitment is recorded and covered it with a focused render test | A missing promise is different from a promise that was fulfilled, so the risk queue must not label both as met | Day 31: distinguish missing promises from met promises |
+
 ## Historical numbering note
 
 The early Git history contains a numbering gap: no verified `Day 9` commit was found during the repository audit, and an earlier `Day 11: test transfer effort scoring` commit exists on 2026-10-06 while the progress log already used Day 11 for the 2026-10-07 follow-up-ownership work. This log does not invent or renumber historical work. The inconsistency is documented here and future day numbering should remain consistent from the current sequence onward.
