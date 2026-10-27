@@ -1,3 +1,6 @@
+from types import SimpleNamespace
+
+import app.main as main_module
 from fastapi.testclient import TestClient
 
 from app.main import app
@@ -334,3 +337,32 @@ def test_inactive_user_existing_session_is_rejected(monkeypatch):
                 user = db.query(User).filter_by(email="admin@carepulse.demo").one()
                 user.is_active = original_state
                 db.commit()
+
+
+def test_risk_monitor_marks_missing_promise_separately(monkeypatch):
+    case = SimpleNamespace(
+        case_id="CP-TEST",
+        industry="Technology",
+        issue_category="Account access",
+        current_owner="Agent-01",
+        feedback=SimpleNamespace(final_sentiment="negative"),
+        interactions=[],
+        promises=[],
+    )
+
+    monkeypatch.setattr(
+        main_module,
+        "intelligence_context",
+        lambda _db: {
+            "bands": {"LOW": 0, "MEDIUM": 0, "HIGH": 1},
+            "high_risk": [case],
+        },
+    )
+    monkeypatch.setattr(main_module, "experience_risk", lambda _case: {"score": 80})
+    monkeypatch.setattr(main_module, "silent_wait_minutes", lambda _case: 10)
+
+    with TestClient(app) as client:
+        response = client.get("/risk-monitor")
+
+    assert response.status_code == 200
+    assert "None recorded" in response.text
