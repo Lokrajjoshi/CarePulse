@@ -366,3 +366,18 @@ def test_risk_monitor_marks_missing_promise_separately(monkeypatch):
 
     assert response.status_code == 200
     assert "None recorded" in response.text
+
+
+def test_risk_monitor_shows_missed_promise_count(monkeypatch):
+    case = SimpleNamespace(
+        case_id="CP-TEST", industry="Technology", issue_category="Account access",
+        current_owner="Agent-01", feedback=SimpleNamespace(final_sentiment="negative"),
+        interactions=[], promises=[SimpleNamespace(promise_met=False), SimpleNamespace(promise_met=False)],
+    )
+    monkeypatch.setattr(main_module, "intelligence_context", lambda _db: {"bands": {"LOW": 0, "MEDIUM": 0, "HIGH": 1}, "high_risk": [case]})
+    monkeypatch.setattr(main_module, "experience_risk", lambda _case: {"score": 80})
+    monkeypatch.setattr(main_module, "silent_wait_minutes", lambda _case: 10)
+    with TestClient(app) as client:
+        response = client.get("/risk-monitor")
+    assert response.status_code == 200
+    assert "2 missed" in response.text
