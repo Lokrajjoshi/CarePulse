@@ -14,7 +14,7 @@ def silent_wait_minutes(case: Case):
     updates = [i.timestamp for i in case.interactions if i.meaningful_update_flag]
     if not updates:
         return resolution_minutes(case) or minutes_between(case.created_at, datetime.utcnow())
-    end = case.resolved_at or max(i.timestamp for i in case.interactions)
+    end = case.resolved_at or datetime.utcnow()
     points = [case.created_at] + sorted(updates) + [end]
     return round(max((points[i+1] - points[i]).total_seconds() / 60 for i in range(len(points)-1)), 1)
 

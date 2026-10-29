@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 from types import SimpleNamespace
 
-from src.metrics import customer_effort, minutes_between
+import src.metrics as metrics_module
+from src.metrics import customer_effort, minutes_between, silent_wait_minutes
 from src.risk_engine import experience_risk
 from src.sentiment import classify
 
@@ -67,3 +68,31 @@ def test_transfers_add_customer_effort():
     effort_with_transfers = customer_effort(transferred_case)
 
     assert effort_with_transfers - effort_without_transfers == 4.0
+
+
+def test_unresolved_silent_wait_includes_time_since_last_update(monkeypatch):
+    fixed_now = datetime(2026, 10, 29, 12, 0)
+
+    class FixedDateTime(datetime):
+        @classmethod
+        def utcnow(cls):
+            return fixed_now
+
+    monkeypatch.setattr(metrics_module, "datetime", FixedDateTime)
+
+    case = SimpleNamespace(
+        created_at=fixed_now - timedelta(hours=5),
+        resolved_at=None,
+        interactions=[
+            SimpleNamespace(
+                timestamp=fixed_now - timedelta(hours=4),
+                meaningful_update_flag=True,
+            ),
+            SimpleNamespace(
+                timestamp=fixed_now - timedelta(hours=3, minutes=30),
+                meaningful_update_flag=False,
+            ),
+        ],
+    )
+
+    assert silent_wait_minutes(case) == 240.0
