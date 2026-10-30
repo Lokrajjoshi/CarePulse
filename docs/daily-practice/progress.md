@@ -54,6 +54,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 33 | 2026-10-29 | Analytics accuracy | Corrected silent-wait calculation for unresolved cases so ongoing silence continues to the current time and added a regression test | A live support metric should keep measuring the customer's current wait instead of stopping at the last stored interaction | Day 33: correct unresolved silent wait |
 
+| 34 | 2026-10-30 | Analytics accuracy | Excluded unresolved cases from average resolution time and cases without a first response from average first-response time, with a regression test | Missing operational timestamps should not be treated as zero-minute performance because that makes averages look artificially better | Day 34: exclude incomplete cases from time averages |
+
 ## Historical numbering note
 
 The early Git history contains a numbering gap: no verified `Day 9` commit was found during the repository audit, and an earlier `Day 11: test transfer effort scoring` commit exists on 2026-10-06 while the progress log already used Day 11 for the 2026-10-07 follow-up-ownership work. This log does not invent or renumber historical work. The inconsistency is documented here and future day numbering should remain consistent from the current sequence onward.

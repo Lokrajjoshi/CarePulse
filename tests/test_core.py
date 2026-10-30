@@ -4,6 +4,7 @@ from types import SimpleNamespace
 import src.metrics as metrics_module
 from src.metrics import customer_effort, minutes_between, silent_wait_minutes
 from src.risk_engine import experience_risk
+from src.analytics import metrics_for_cases
 from src.sentiment import classify
 
 
@@ -96,3 +97,25 @@ def test_unresolved_silent_wait_includes_time_since_last_update(monkeypatch):
     )
 
     assert silent_wait_minutes(case) == 240.0
+
+
+def test_resolution_average_excludes_open_cases():
+    now = datetime(2026, 10, 30, 12, 0)
+
+    def make_case(resolved_at):
+        return SimpleNamespace(
+            created_at=now,
+            first_response_at=now + timedelta(minutes=5),
+            resolved_at=resolved_at,
+            interactions=[],
+            promises=[],
+            feedback=None,
+            escalation_flag=False,
+        )
+
+    resolved_case = make_case(now + timedelta(minutes=60))
+    open_case = make_case(None)
+
+    metrics = metrics_for_cases([resolved_case, open_case])
+
+    assert metrics["resolution"] == 60.0
