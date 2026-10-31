@@ -78,7 +78,10 @@ def metrics_for_cases(cases):
 
 
 def recommendations_for_cases(cases):
-    total = len(cases) or 1
+    if not cases:
+        return []
+
+    total = len(cases)
     missed = sum(any(not p.promise_met for p in c.promises) for c in cases)
     repeat = sum(bool(c.feedback and c.feedback.repeat_contact_flag) for c in cases)
     return [{"observation": f"{missed / total * 100:.1f}% of filtered cases include a missed promise.", "evidence": f"{missed} of {len(cases)} cases", "impact": "Missed commitments can increase uncertainty and repeat contact.", "action": "Review promise-setting and proactive update workflows.", "measure": "Promise Reliability, DSAT"}, {"observation": f"{repeat / total * 100:.1f}% of filtered cases include repeat contact.", "evidence": f"{repeat} of {len(cases)} cases", "impact": "Repeated contact adds customer effort and queue demand.", "action": "Investigate ownership, routing, and first-contact resolution for this slice.", "measure": "Repeat Contact, Customer Effort"}]
