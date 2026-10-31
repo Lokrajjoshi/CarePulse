@@ -4,6 +4,7 @@ import app.main as main_module
 from fastapi.testclient import TestClient
 
 from app.main import app
+from src.analytics import recommendations_for_cases
 from src.config import settings
 from src.database import SessionLocal
 from src.models import Case, User
@@ -381,3 +382,7 @@ def test_risk_monitor_shows_missed_promise_count(monkeypatch):
         response = client.get("/risk-monitor")
     assert response.status_code == 200
     assert "2 missed" in response.text
+
+
+def test_empty_case_slice_has_no_recommendations():
+    assert recommendations_for_cases([]) == []
