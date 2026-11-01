@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
 from types import SimpleNamespace
 
+import app.main as main_module
+
 import src.metrics as metrics_module
 from src.metrics import customer_effort, minutes_between, silent_wait_minutes
 from src.risk_engine import experience_risk
@@ -119,3 +121,32 @@ def test_resolution_average_excludes_open_cases():
     metrics = metrics_for_cases([resolved_case, open_case])
 
     assert metrics["resolution"] == 60.0
+
+
+def test_overview_uses_complete_case_denominators(monkeypatch):
+    now = datetime(2026, 11, 1, 12, 0)
+
+    def case(resolved_at):
+        return SimpleNamespace(
+            created_at=now,
+            first_response_at=now + timedelta(minutes=10),
+            resolved_at=resolved_at,
+            interactions=[],
+            promises=[],
+            feedback=None,
+            escalation_flag=False,
+        )
+
+    cases = [case(now + timedelta(minutes=60)), case(None)]
+
+    class QueryStub:
+        def all(self):
+            return cases
+
+    monkeypatch.setattr(main_module, "case_query", lambda _db: QueryStub())
+
+    result = main_module.overview(None)
+
+    assert result["total_cases"] == 2
+    assert result["avg_first_response_min"] == 10.0
+    assert result["avg_resolution_min"] == 60.0

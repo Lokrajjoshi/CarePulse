@@ -58,6 +58,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 35 | 2026-10-31 | Analytics accuracy | Suppressed recommendation percentages when a filtered analytics slice has no cases, with a focused regression test | A 0-of-0 recommendation is not evidence and can mislead a manager | Day 35: hide empty-slice recommendations |
 
+| 36 | 2026-11-01 | API analytics consistency | Updated the overview API to reuse the validated analytics calculations so unresolved or unresponded cases no longer dilute time averages, with a regression test | One shared calculation prevents dashboards and APIs from reporting different performance numbers | Day 36: align overview API metrics |
+
 ## Historical numbering note
 
 The early Git history contains a numbering gap: no verified `Day 9` commit was found during the repository audit, and an earlier `Day 11: test transfer effort scoring` commit exists on 2026-10-06 while the progress log already used Day 11 for the 2026-10-07 follow-up-ownership work. This log does not invent or renumber historical work. The inconsistency is documented here and future day numbering should remain consistent from the current sequence onward.

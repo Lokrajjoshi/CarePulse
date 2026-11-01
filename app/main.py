@@ -355,9 +355,18 @@ def recommendation(request: Request, case_id: str, db: Session = Depends(get_db)
 @app.get("/api/metrics/overview")
 def overview(db: Session = Depends(get_db)):
     cs = case_query(db).all()
-    feedback = [c.feedback for c in cs if c.feedback]
-    promises = [p for c in cs for p in c.promises]
-    return {"total_cases": len(cs), "csat": round(sum(f.csat_score for f in feedback) / len(feedback), 2) if feedback else 0, "dsat_pct": round(sum(f.dsat_flag for f in feedback) / len(feedback) * 100, 1) if feedback else 0, "nps": round(sum((f.recommendation_score >= 9) - (f.recommendation_score <= 6) for f in feedback) / len(feedback) * 100, 1) if feedback else 0, "avg_first_response_min": round(sum(first_response_minutes(c) for c in cs) / len(cs), 1) if cs else 0, "avg_resolution_min": round(sum(resolution_minutes(c) for c in cs) / len(cs), 1) if cs else 0, "avg_silent_wait_min": round(sum(silent_wait_minutes(c) for c in cs) / len(cs), 1) if cs else 0, "promise_reliability": round(sum(p.promise_met for p in promises) / len(promises) * 100, 1) if promises else 0, "high_risk_cases": sum(experience_risk(c)["band"] == "HIGH" for c in cs)}
+    metrics = metrics_for_cases(cs)
+    return {
+        "total_cases": metrics["cases"],
+        "csat": metrics["csat"],
+        "dsat_pct": metrics["dsat_pct"],
+        "nps": metrics["nps"],
+        "avg_first_response_min": metrics["first_response"],
+        "avg_resolution_min": metrics["resolution"],
+        "avg_silent_wait_min": metrics["silent_wait"],
+        "promise_reliability": metrics["promise_reliability"],
+        "high_risk_cases": metrics["high_risk"],
+    }
 
 @app.get("/api/analytics/recovery")
 def recovery(db: Session = Depends(get_db)):
