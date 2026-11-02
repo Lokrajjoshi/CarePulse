@@ -365,6 +365,10 @@ def overview(db: Session = Depends(get_db)):
         "avg_resolution_min": metrics["resolution"],
         "avg_silent_wait_min": metrics["silent_wait"],
         "promise_reliability": metrics["promise_reliability"],
+        "repeat_contact_pct": metrics["repeat_contact"],
+        "transfer_rate_pct": metrics["transfer_rate"],
+        "customer_effort": metrics["effort"],
+        "recovery_rate_pct": metrics["recovery_rate"],
         "high_risk_cases": metrics["high_risk"],
     }
 
