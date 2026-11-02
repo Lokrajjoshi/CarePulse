@@ -386,3 +386,13 @@ def test_risk_monitor_shows_missed_promise_count(monkeypatch):
 
 def test_empty_case_slice_has_no_recommendations():
     assert recommendations_for_cases([]) == []
+
+
+def test_overview_api_exposes_operational_metrics():
+    with TestClient(app) as client:
+        response = client.get("/api/metrics/overview")
+
+    assert response.status_code == 200
+    metrics = response.json()
+    for key in ("repeat_contact_pct", "transfer_rate_pct", "customer_effort", "recovery_rate_pct"):
+        assert key in metrics
