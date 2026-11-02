@@ -60,6 +60,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 36 | 2026-11-01 | API analytics consistency | Updated the overview API to reuse the validated analytics calculations so unresolved or unresponded cases no longer dilute time averages, with a regression test | One shared calculation prevents dashboards and APIs from reporting different performance numbers | Day 36: align overview API metrics |
 
+| 37 | 2026-11-02 | API analytics consistency | Added repeat-contact, transfer-rate, customer-effort, and recovery-rate values to the overview API, with a focused response test | External reports need the same operational context as the dashboard, not only basic timing metrics | Day 37: expose operational metrics in overview API |
+
 ## Historical numbering note
 
 The early Git history contains a numbering gap: no verified `Day 9` commit was found during the repository audit, and an earlier `Day 11: test transfer effort scoring` commit exists on 2026-10-06 while the progress log already used Day 11 for the 2026-10-07 follow-up-ownership work. This log does not invent or renumber historical work. The inconsistency is documented here and future day numbering should remain consistent from the current sequence onward.
