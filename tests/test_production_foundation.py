@@ -394,5 +394,6 @@ def test_overview_api_exposes_operational_metrics():
 
     assert response.status_code == 200
     metrics = response.json()
-    for key in ("repeat_contact_pct", "transfer_rate_pct", "customer_effort", "recovery_rate_pct"):
+    for key in ("repeat_contact_pct", "transfer_rate_pct", "customer_effort", "recovery_rate_pct", "cases_with_first_response", "cases_resolved"):
         assert key in metrics
+        assert 0 <= metrics[key] if key.startswith("cases_") else True
