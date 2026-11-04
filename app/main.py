@@ -365,6 +365,7 @@ def overview(db: Session = Depends(get_db)):
         "cases_with_first_response": metrics["cases_with_first_response"],
         "avg_resolution_min": metrics["resolution"],
         "cases_resolved": metrics["cases_resolved"],
+        "open_cases": metrics["open_cases"],
         "avg_silent_wait_min": metrics["silent_wait"],
         "promise_reliability": metrics["promise_reliability"],
         "repeat_contact_pct": metrics["repeat_contact"],
