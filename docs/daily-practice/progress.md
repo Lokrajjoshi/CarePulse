@@ -66,6 +66,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 39 | 2026-11-04 | API workload visibility | Added the unresolved-case count to the overview API and extended the response test | Timing averages need backlog context because an unresolved queue can still grow while completed cases look fast | Day 39: expose open-case workload |
 
+| 40 | 2026-11-05 | API analytics reliability | Strengthened the overview response test so coverage and open-workload counts must be within the total case count | API values need relationship checks, not only presence checks, because an impossible count can quietly mislead a dashboard | Day 40: validate overview workload counts |
+
 ## Historical numbering note
 
 The early Git history contains a numbering gap: no verified `Day 9` commit was found during the repository audit, and an earlier `Day 11: test transfer effort scoring` commit exists on 2026-10-06 while the progress log already used Day 11 for the 2026-10-07 follow-up-ownership work. This log does not invent or renumber historical work. The inconsistency is documented here and future day numbering should remain consistent from the current sequence onward.
