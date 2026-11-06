@@ -68,6 +68,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 40 | 2026-11-05 | API analytics reliability | Strengthened the overview response test so coverage and open-workload counts must be within the total case count | API values need relationship checks, not only presence checks, because an impossible count can quietly mislead a dashboard | Day 40: validate overview workload counts |
 
+| 41 | 2026-11-06 | Dashboard clarity | Added the number of cases behind the first-response average and covered the wording with a dashboard/API check | A timing average is meaningful only when managers can see how many cases have a recorded response | Day 41: show first-response coverage |
+
 ## Historical numbering note
 
 The early Git history contains a numbering gap: no verified `Day 9` commit was found during the repository audit, and an earlier `Day 11: test transfer effort scoring` commit exists on 2026-10-06 while the progress log already used Day 11 for the 2026-10-07 follow-up-ownership work. This log does not invent or renumber historical work. The inconsistency is documented here and future day numbering should remain consistent from the current sequence onward.
