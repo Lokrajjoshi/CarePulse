@@ -411,3 +411,15 @@ def test_dashboard_shows_first_response_coverage():
     metrics = metrics_response.json()
     coverage = f'{metrics["cases_with_first_response"]} of {metrics["total_cases"]} cases responded'
     assert coverage in dashboard_response.text
+
+
+def test_dashboard_shows_resolution_coverage():
+    with TestClient(app) as client:
+        metrics_response = client.get("/api/metrics/overview")
+        dashboard_response = client.get("/dashboard")
+
+    assert metrics_response.status_code == 200
+    assert dashboard_response.status_code == 200
+    metrics = metrics_response.json()
+    coverage = f'{metrics["cases_resolved"]} of {metrics["total_cases"]} cases resolved'
+    assert coverage in dashboard_response.text
