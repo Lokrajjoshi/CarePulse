@@ -70,6 +70,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 41 | 2026-11-06 | Dashboard clarity | Added the number of cases behind the first-response average and covered the wording with a dashboard/API check | A timing average is meaningful only when managers can see how many cases have a recorded response | Day 41: show first-response coverage |
 
+| 42 | 2026-11-07 | Dashboard clarity | Added resolved-case coverage beside average resolution time and covered it with a dashboard/API check | Resolution time needs its record count visible because open cases are not part of the average | Day 42: show resolution coverage |
+
 ## Historical numbering note
 
 The early Git history contains a numbering gap: no verified `Day 9` commit was found during the repository audit, and an earlier `Day 11: test transfer effort scoring` commit exists on 2026-10-06 while the progress log already used Day 11 for the 2026-10-07 follow-up-ownership work. This log does not invent or renumber historical work. The inconsistency is documented here and future day numbering should remain consistent from the current sequence onward.
