@@ -423,3 +423,15 @@ def test_dashboard_shows_resolution_coverage():
     metrics = metrics_response.json()
     coverage = f'{metrics["cases_resolved"]} of {metrics["total_cases"]} cases resolved'
     assert coverage in dashboard_response.text
+
+
+def test_dashboard_shows_open_case_workload():
+    with TestClient(app) as client:
+        metrics_response = client.get("/api/metrics/overview")
+        dashboard_response = client.get("/dashboard")
+
+    assert metrics_response.status_code == 200
+    assert dashboard_response.status_code == 200
+    metrics = metrics_response.json()
+    assert str(metrics["open_cases"]) in dashboard_response.text
+    assert "Still waiting for resolution" in dashboard_response.text
