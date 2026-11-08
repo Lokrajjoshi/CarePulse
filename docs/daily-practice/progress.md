@@ -72,6 +72,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 42 | 2026-11-07 | Dashboard clarity | Added resolved-case coverage beside average resolution time and covered it with a dashboard/API check | Resolution time needs its record count visible because open cases are not part of the average | Day 42: show resolution coverage |
 
+| 43 | 2026-11-08 | Dashboard workload visibility | Added unresolved-case workload to the executive dashboard with a focused dashboard/API check | Average response or resolution time can look healthy while unresolved work still needs attention | Day 43: show open case workload |
+
 ## Historical numbering note
 
 The early Git history contains a numbering gap: no verified `Day 9` commit was found during the repository audit, and an earlier `Day 11: test transfer effort scoring` commit exists on 2026-10-06 while the progress log already used Day 11 for the 2026-10-07 follow-up-ownership work. This log does not invent or renumber historical work. The inconsistency is documented here and future day numbering should remain consistent from the current sequence onward.
