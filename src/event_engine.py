@@ -30,8 +30,10 @@ def ingest_event(db, case: Case, event_type: str, event_timestamp: datetime, act
             promised = event_timestamp + timedelta(hours=2)
         db.add(Promise(promise_id=f"PRO-{uuid4().hex[:10]}", case_id=case.case_id, promise_created_at=event_timestamp, promised_update_at=promised, actual_update_at=None, promise_met=False))
     if event_type == "PROMISE_FULFILLED":
-        promise = sorted(case.promises, key=lambda p: p.promise_created_at)[-1] if case.promises else None
+        outstanding = [p for p in case.promises if not p.promise_met]
+        promise = max(outstanding, key=lambda p: p.promise_created_at) if outstanding else None
         if promise:
-            promise.actual_update_at = event_timestamp; promise.promise_met = event_timestamp <= promise.promised_update_at
+            promise.actual_update_at = event_timestamp
+            promise.promise_met = event_timestamp <= promise.promised_update_at
     db.commit()
     return event

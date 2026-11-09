@@ -74,6 +74,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 43 | 2026-11-08 | Dashboard workload visibility | Added unresolved-case workload to the executive dashboard with a focused dashboard/API check | Average response or resolution time can look healthy while unresolved work still needs attention | Day 43: show open case workload |
 
+| 44 | 2026-11-09 | Promise workflow accuracy | Corrected promise-fulfilment handling so an update closes the most recent outstanding promise instead of overwriting an already completed one, with a focused regression test | Event processing must update the unresolved commitment that actually needs closure or the case history becomes misleading | Day 44: fulfill latest outstanding promise |
+
 ## Historical numbering note
 
 The early Git history contains a numbering gap: no verified `Day 9` commit was found during the repository audit, and an earlier `Day 11: test transfer effort scoring` commit exists on 2026-10-06 while the progress log already used Day 11 for the 2026-10-07 follow-up-ownership work. This log does not invent or renumber historical work. The inconsistency is documented here and future day numbering should remain consistent from the current sequence onward.

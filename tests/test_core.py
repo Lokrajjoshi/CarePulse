@@ -8,6 +8,7 @@ from src.metrics import customer_effort, minutes_between, silent_wait_minutes
 from src.risk_engine import experience_risk
 from src.analytics import metrics_for_cases
 from src.sentiment import classify
+from src.event_engine import ingest_event
 
 
 def test_minutes_between():
@@ -150,3 +151,42 @@ def test_overview_uses_complete_case_denominators(monkeypatch):
     assert result["total_cases"] == 2
     assert result["avg_first_response_min"] == 10.0
     assert result["avg_resolution_min"] == 60.0
+
+
+def test_promise_fulfilled_updates_latest_outstanding_promise():
+    now = datetime(2026, 11, 9, 12, 0)
+    older_outstanding = SimpleNamespace(
+        promise_created_at=now - timedelta(hours=3),
+        promised_update_at=now + timedelta(hours=1),
+        actual_update_at=None,
+        promise_met=False,
+    )
+    newer_completed = SimpleNamespace(
+        promise_created_at=now - timedelta(hours=1),
+        promised_update_at=now,
+        actual_update_at=now - timedelta(minutes=10),
+        promise_met=True,
+    )
+    case = SimpleNamespace(
+        case_id="CP-TEST",
+        promises=[older_outstanding, newer_completed],
+    )
+
+    class DbStub:
+        def add(self, _value):
+            pass
+
+        def commit(self):
+            pass
+
+    ingest_event(
+        DbStub(),
+        case,
+        event_type="PROMISE_FULFILLED",
+        event_timestamp=now,
+        actor_type="agent",
+    )
+
+    assert older_outstanding.actual_update_at == now
+    assert older_outstanding.promise_met is True
+    assert newer_completed.actual_update_at == now - timedelta(minutes=10)
