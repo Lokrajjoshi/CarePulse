@@ -11,6 +11,10 @@ def ingest_event(db, case: Case, event_type: str, event_timestamp: datetime, act
     if event_type not in EVENT_TYPES:
         raise ValueError(f"Unsupported event type: {event_type}")
     metadata = metadata or {}
+    if event_type == "PROMISE_MADE" and metadata.get("promised_update_at"):
+        promised = datetime.fromisoformat(metadata["promised_update_at"])
+        if promised <= event_timestamp:
+            raise ValueError("Promised update time must be after the event time.")
     event = Event(event_id=f"EVT-{uuid4().hex[:10]}", case_id=case.case_id, event_type=event_type, event_timestamp=event_timestamp, actor_type=actor_type, actor_id=actor_id, message=message or None, metadata_json=json.dumps(metadata))
     db.add(event)
     if event_type in {"CUSTOMER_MESSAGE", "AGENT_MESSAGE", "MEANINGFUL_UPDATE"}:

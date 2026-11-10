@@ -76,6 +76,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 44 | 2026-11-09 | Promise workflow accuracy | Corrected promise-fulfilment handling so an update closes the most recent outstanding promise instead of overwriting an already completed one, with a focused regression test | Event processing must update the unresolved commitment that actually needs closure or the case history becomes misleading | Day 44: fulfill latest outstanding promise |
 
+| 45 | 2026-11-10 | Promise workflow validation | Rejected promise deadlines that are not in the future before any event or promise is added, with a regression test confirming no partial mutation occurs | Invalid commitments should fail before changing case history, otherwise a later database commit could preserve a misleading event | Day 45: reject invalid promise deadlines |
+
 ## Historical numbering note
 
 The early Git history contains a numbering gap: no verified `Day 9` commit was found during the repository audit, and an earlier `Day 11: test transfer effort scoring` commit exists on 2026-10-06 while the progress log already used Day 11 for the 2026-10-07 follow-up-ownership work. This log does not invent or renumber historical work. The inconsistency is documented here and future day numbering should remain consistent from the current sequence onward.

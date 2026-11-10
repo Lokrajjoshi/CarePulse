@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
 from types import SimpleNamespace
 
+import pytest
+
 import app.main as main_module
 
 import src.metrics as metrics_module
@@ -190,3 +192,34 @@ def test_promise_fulfilled_updates_latest_outstanding_promise():
     assert older_outstanding.actual_update_at == now
     assert older_outstanding.promise_met is True
     assert newer_completed.actual_update_at == now - timedelta(minutes=10)
+
+
+def test_promise_made_rejects_past_deadline_without_mutation():
+    now = datetime(2026, 11, 10, 9, 0)
+    case = SimpleNamespace(case_id="CP-TEST", promises=[])
+
+    class DbStub:
+        def __init__(self):
+            self.added = []
+            self.committed = False
+
+        def add(self, value):
+            self.added.append(value)
+
+        def commit(self):
+            self.committed = True
+
+    db = DbStub()
+
+    with pytest.raises(ValueError, match="Promised update time must be after the event time"):
+        ingest_event(
+            db,
+            case,
+            event_type="PROMISE_MADE",
+            event_timestamp=now,
+            actor_type="agent",
+            metadata={"promised_update_at": (now - timedelta(minutes=5)).isoformat()},
+        )
+
+    assert db.added == []
+    assert db.committed is False
