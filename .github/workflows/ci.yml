@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       APP_ENV: demo
-      SECRET_KEY: ci-only-carepulse-secret
+      SECRET_KEY: ci-only-carepulse-secret-xxxxxxxxxxxxxxxx
       DATABASE_URL: sqlite:///./carepulse_ci.db
     steps:
       - uses: actions/checkout@v4

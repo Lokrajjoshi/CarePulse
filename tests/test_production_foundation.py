@@ -1,5 +1,6 @@
 from types import SimpleNamespace
 
+import pytest
 import app.main as main_module
 from fastapi.testclient import TestClient
 
