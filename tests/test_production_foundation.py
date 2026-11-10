@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 from src.analytics import recommendations_for_cases
-from src.config import settings
+from src.config import DEMO_SECRET_KEY, settings, validate_runtime_settings
 from src.database import SessionLocal
 from src.models import Case, User
 
@@ -435,3 +435,18 @@ def test_dashboard_shows_open_case_workload():
     metrics = metrics_response.json()
     assert str(metrics["open_cases"]) in dashboard_response.text
     assert "Still waiting for resolution" in dashboard_response.text
+
+
+def test_production_rejects_demo_signing_key(monkeypatch):
+    monkeypatch.setattr(settings, "app_env", "production")
+    monkeypatch.setattr(settings, "secret_key", DEMO_SECRET_KEY)
+
+    with pytest.raises(RuntimeError, match="Production requires a unique SECRET_KEY"):
+        validate_runtime_settings()
+
+
+def test_production_accepts_unique_long_signing_key(monkeypatch):
+    monkeypatch.setattr(settings, "app_env", "production")
+    monkeypatch.setattr(settings, "secret_key", "production-test-key-" + "x" * 32)
+
+    validate_runtime_settings()

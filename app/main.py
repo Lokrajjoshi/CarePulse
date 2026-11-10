@@ -16,7 +16,7 @@ from sqlalchemy import inspect, text
 from sqlalchemy.orm import Session, selectinload
 from src.database import Base, SessionLocal, engine, get_db
 from src.models import Agent, AuditLog, Case, Customer, Interaction, Intervention, Organization, User
-from src.config import settings
+from src.config import settings, validate_runtime_settings
 from src.auth import COOKIE_NAME, hash_password, make_session, read_session, verify_password
 from src.tenant import current_organization_id, current_risk_thresholds, organization_id
 from src.metrics import customer_effort, first_response_minutes, resolution_minutes, silent_wait_minutes
@@ -33,6 +33,7 @@ from app.services.report_service import csv_bytes, xlsx_bytes, pdf_bytes
 logging.basicConfig(level=logging.INFO)
 @asynccontextmanager
 async def lifespan(_app):
+    validate_runtime_settings()
     bootstrap_demo_database()
     yield
 
