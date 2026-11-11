@@ -78,6 +78,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 45 | 2026-11-10 | Promise workflow validation | Rejected promise deadlines that are not in the future before any event or promise is added, with a regression test confirming no partial mutation occurs | Invalid commitments should fail before changing case history, otherwise a later database commit could preserve a misleading event | Day 45: reject invalid promise deadlines |
 
+| 46 | 2026-11-11 | Risk queue reliability | Showed a clear state for high-risk cases with no feedback and added a focused page test | Optional feedback must not make the manager's risk queue fail | Day 46: handle cases without feedback in risk queue |
+
 ## Historical numbering note
 
 The early Git history contains a numbering gap: no verified `Day 9` commit was found during the repository audit, and an earlier `Day 11: test transfer effort scoring` commit exists on 2026-10-06 while the progress log already used Day 11 for the 2026-10-07 follow-up-ownership work. This log does not invent or renumber historical work. The inconsistency is documented here and future day numbering should remain consistent from the current sequence onward.
