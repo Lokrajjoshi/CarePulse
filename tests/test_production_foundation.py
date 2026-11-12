@@ -451,3 +451,29 @@ def test_production_accepts_unique_long_signing_key(monkeypatch):
     monkeypatch.setattr(settings, "secret_key", "production-test-key-" + "x" * 32)
 
     validate_runtime_settings()
+
+
+
+def def test_risk_monitor_uses_neutral_state_for_missing_feedback(monkeypatch):
+    case = SimpleNamespace(
+        case_id="CP-TEST",
+        industry="Technology",
+        issue_category="Account access",
+        current_owner="Agent-01",
+        feedback=None,
+        interactions=[],
+        promises=[],
+    )
+    monkeypatch.setattr(
+        main_module,
+        "intelligence_context",
+        lambda _db: {"bands": {"LOW": 0, "MEDIUM": 0, "HIGH": 1}, "high_risk": [case]},
+    )
+    monkeypatch.setattr(main_module, "experience_risk", lambda _case: {"score": 80})
+    monkeypatch.setattr(main_module, "silent_wait_minutes", lambda _case: 10)
+
+    with TestClient(app) as client:
+        response = client.get("/risk-monitor")
+
+    assert response.status_code == 200
+    assert '<span class="tag">Not recorded</span>' in response.text
