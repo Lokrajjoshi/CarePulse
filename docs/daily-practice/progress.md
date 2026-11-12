@@ -92,3 +92,5 @@ Keep each note short and honest:
 - Which part of the project did it involve?
 - Which tool, language, or framework did it help you understand?
 - How would you explain it in an interview?
+
+| 47 | 2026-11-12 | Risk queue clarity | Kept cases with no recorded feedback visually neutral instead of displaying them like negative feedback, with a focused page check | Missing information and negative feedback need different visual treatment so managers do not overread the queue | Day 47: keep missing feedback neutral |
