@@ -454,7 +454,7 @@ def test_production_accepts_unique_long_signing_key(monkeypatch):
 
 
 
-def def test_risk_monitor_uses_neutral_state_for_missing_feedback(monkeypatch):
+def test_risk_monitor_uses_neutral_state_for_missing_feedback(monkeypatch):
     case = SimpleNamespace(
         case_id="CP-TEST",
         industry="Technology",
