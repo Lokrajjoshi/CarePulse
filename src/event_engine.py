@@ -37,6 +37,8 @@ def ingest_event(db, case: Case, event_type: str, event_timestamp: datetime, act
         outstanding = [p for p in case.promises if not p.promise_met]
         promise = max(outstanding, key=lambda p: p.promise_created_at) if outstanding else None
         if promise:
+            if event_timestamp < promise.promise_created_at:
+                raise ValueError("Promise fulfilment time cannot be before the promise was created.")
             promise.actual_update_at = event_timestamp
             promise.promise_met = event_timestamp <= promise.promised_update_at
     db.commit()

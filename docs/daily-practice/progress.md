@@ -82,6 +82,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 48 | 2026-11-13 | Test reliability | Fixed a syntax error in the missing-feedback regression test that prevented the full test suite from collecting | A valid feature change is not complete if the repository's tests cannot even start; restoring green CI keeps the project trustworthy | Day 48: repair feedback regression test |
 
+| 49 | 2026-11-14 | Promise event chronology | Rejected promise-fulfilment events whose timestamp is earlier than the promise creation time, with a regression test confirming the promise is left unchanged | Event history must preserve chronological order or an impossible timestamp can make a commitment appear successfully met | Day 49: validate promise fulfilment chronology |
+
 ## Historical numbering note
 
 The early Git history contains a numbering gap: no verified `Day 9` commit was found during the repository audit, and an earlier `Day 11: test transfer effort scoring` commit exists on 2026-10-06 while the progress log already used Day 11 for the 2026-10-07 follow-up-ownership work. This log does not invent or renumber historical work. The inconsistency is documented here and future day numbering should remain consistent from the current sequence onward.

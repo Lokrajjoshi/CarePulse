@@ -223,3 +223,39 @@ def test_promise_made_rejects_past_deadline_without_mutation():
 
     assert db.added == []
     assert db.committed is False
+
+
+def test_promise_fulfilled_rejects_time_before_promise_creation():
+    created = datetime(2026, 11, 14, 10, 0)
+    promise = SimpleNamespace(
+        promise_created_at=created,
+        promised_update_at=created + timedelta(hours=2),
+        actual_update_at=None,
+        promise_met=False,
+    )
+    case = SimpleNamespace(case_id="CP-TEST", promises=[promise])
+
+    class DbStub:
+        def __init__(self):
+            self.committed = False
+
+        def add(self, _value):
+            pass
+
+        def commit(self):
+            self.committed = True
+
+    db = DbStub()
+
+    with pytest.raises(ValueError, match="Promise fulfilment time cannot be before the promise was created"):
+        ingest_event(
+            db,
+            case,
+            event_type="PROMISE_FULFILLED",
+            event_timestamp=created - timedelta(minutes=1),
+            actor_type="agent",
+        )
+
+    assert promise.actual_update_at is None
+    assert promise.promise_met is False
+    assert db.committed is False
