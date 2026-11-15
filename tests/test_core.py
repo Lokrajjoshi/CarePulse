@@ -237,10 +237,11 @@ def test_promise_fulfilled_rejects_time_before_promise_creation():
 
     class DbStub:
         def __init__(self):
+            self.added = []
             self.committed = False
 
-        def add(self, _value):
-            pass
+        def add(self, value):
+            self.added.append(value)
 
         def commit(self):
             self.committed = True
@@ -258,4 +259,5 @@ def test_promise_fulfilled_rejects_time_before_promise_creation():
 
     assert promise.actual_update_at is None
     assert promise.promise_met is False
+    assert db.added == []
     assert db.committed is False
