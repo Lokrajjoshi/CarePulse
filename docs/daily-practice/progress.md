@@ -86,6 +86,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 50 | 2026-11-15 | Atomic event validation | Moved promise-fulfilment chronology validation ahead of event creation and strengthened the regression test to prove no invalid event is added to the database session | Rejecting invalid input is not enough if a partial object remains pending in the session; validation should happen before mutation | Day 50: make promise chronology validation atomic |
 
+| 51 | 2026-11-16 | Promise state validation | Rejected promise-fulfilment events when no outstanding promise exists, with a regression test confirming no event or database commit occurs | A fulfilment event should correspond to a real unresolved commitment; otherwise the case history can contain a false completion signal | Day 51: reject orphan promise fulfilment |
+
 ## Historical numbering note
 
 The early Git history contains a numbering gap: no verified `Day 9` commit was found during the repository audit, and an earlier `Day 11: test transfer effort scoring` commit exists on 2026-10-06 while the progress log already used Day 11 for the 2026-10-07 follow-up-ownership work. This log does not invent or renumber historical work. The inconsistency is documented here and future day numbering should remain consistent from the current sequence onward.

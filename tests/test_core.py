@@ -261,3 +261,41 @@ def test_promise_fulfilled_rejects_time_before_promise_creation():
     assert promise.promise_met is False
     assert db.added == []
     assert db.committed is False
+
+
+def test_promise_fulfilled_rejects_when_no_outstanding_promise():
+    now = datetime(2026, 11, 16, 10, 0)
+    completed = SimpleNamespace(
+        promise_created_at=now - timedelta(hours=2),
+        promised_update_at=now - timedelta(hours=1),
+        actual_update_at=now - timedelta(hours=1, minutes=30),
+        promise_met=True,
+    )
+    case = SimpleNamespace(case_id="CP-TEST", promises=[completed])
+
+    class DbStub:
+        def __init__(self):
+            self.added = []
+            self.committed = False
+
+        def add(self, value):
+            self.added.append(value)
+
+        def commit(self):
+            self.committed = True
+
+    db = DbStub()
+
+    with pytest.raises(ValueError, match="no outstanding promise exists"):
+        ingest_event(
+            db,
+            case,
+            event_type="PROMISE_FULFILLED",
+            event_timestamp=now,
+            actor_type="agent",
+        )
+
+    assert db.added == []
+    assert db.committed is False
+    assert completed.actual_update_at == now - timedelta(hours=1, minutes=30)
+    assert completed.promise_met is True

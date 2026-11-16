@@ -19,7 +19,9 @@ def ingest_event(db, case: Case, event_type: str, event_timestamp: datetime, act
     if event_type == "PROMISE_FULFILLED":
         outstanding = [p for p in case.promises if not p.promise_met]
         promise_to_fulfill = max(outstanding, key=lambda p: p.promise_created_at) if outstanding else None
-        if promise_to_fulfill and event_timestamp < promise_to_fulfill.promise_created_at:
+        if not promise_to_fulfill:
+            raise ValueError("Cannot fulfil a promise when no outstanding promise exists.")
+        if event_timestamp < promise_to_fulfill.promise_created_at:
             raise ValueError("Promise fulfilment time cannot be before the promise was created.")
     event = Event(event_id=f"EVT-{uuid4().hex[:10]}", case_id=case.case_id, event_type=event_type, event_timestamp=event_timestamp, actor_type=actor_type, actor_id=actor_id, message=message or None, metadata_json=json.dumps(metadata))
     db.add(event)
