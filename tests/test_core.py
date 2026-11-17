@@ -171,6 +171,7 @@ def test_promise_fulfilled_updates_latest_outstanding_promise():
     )
     case = SimpleNamespace(
         case_id="CP-TEST",
+        created_at=now - timedelta(hours=4),
         promises=[older_outstanding, newer_completed],
     )
 
@@ -196,7 +197,11 @@ def test_promise_fulfilled_updates_latest_outstanding_promise():
 
 def test_promise_made_rejects_past_deadline_without_mutation():
     now = datetime(2026, 11, 10, 9, 0)
-    case = SimpleNamespace(case_id="CP-TEST", promises=[])
+    case = SimpleNamespace(
+        case_id="CP-TEST",
+        created_at=now - timedelta(hours=1),
+        promises=[],
+    )
 
     class DbStub:
         def __init__(self):
@@ -233,7 +238,11 @@ def test_promise_fulfilled_rejects_time_before_promise_creation():
         actual_update_at=None,
         promise_met=False,
     )
-    case = SimpleNamespace(case_id="CP-TEST", promises=[promise])
+    case = SimpleNamespace(
+        case_id="CP-TEST",
+        created_at=created - timedelta(hours=1),
+        promises=[promise],
+    )
 
     class DbStub:
         def __init__(self):
@@ -271,7 +280,11 @@ def test_promise_fulfilled_rejects_when_no_outstanding_promise():
         actual_update_at=now - timedelta(hours=1, minutes=30),
         promise_met=True,
     )
-    case = SimpleNamespace(case_id="CP-TEST", promises=[completed])
+    case = SimpleNamespace(
+        case_id="CP-TEST",
+        created_at=now - timedelta(hours=3),
+        promises=[completed],
+    )
 
     class DbStub:
         def __init__(self):
