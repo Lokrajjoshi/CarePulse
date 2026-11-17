@@ -299,3 +299,38 @@ def test_promise_fulfilled_rejects_when_no_outstanding_promise():
     assert db.committed is False
     assert completed.actual_update_at == now - timedelta(hours=1, minutes=30)
     assert completed.promise_met is True
+
+
+def test_event_rejects_timestamp_before_case_creation():
+    created = datetime(2026, 11, 17, 9, 0)
+    case = SimpleNamespace(
+        case_id="CP-TEST",
+        created_at=created,
+        promises=[],
+    )
+
+    class DbStub:
+        def __init__(self):
+            self.added = []
+            self.committed = False
+
+        def add(self, value):
+            self.added.append(value)
+
+        def commit(self):
+            self.committed = True
+
+    db = DbStub()
+
+    with pytest.raises(ValueError, match="Event time cannot be before the case was created"):
+        ingest_event(
+            db,
+            case,
+            event_type="CUSTOMER_MESSAGE",
+            event_timestamp=created - timedelta(minutes=1),
+            actor_type="customer",
+            message="This timestamp is impossible.",
+        )
+
+    assert db.added == []
+    assert db.committed is False

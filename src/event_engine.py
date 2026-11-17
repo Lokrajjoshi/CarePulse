@@ -11,6 +11,8 @@ def ingest_event(db, case: Case, event_type: str, event_timestamp: datetime, act
     if event_type not in EVENT_TYPES:
         raise ValueError(f"Unsupported event type: {event_type}")
     metadata = metadata or {}
+    if event_timestamp < case.created_at:
+        raise ValueError("Event time cannot be before the case was created.")
     promise_to_fulfill = None
     if event_type == "PROMISE_MADE" and metadata.get("promised_update_at"):
         promised = datetime.fromisoformat(metadata["promised_update_at"])
