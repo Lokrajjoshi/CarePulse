@@ -347,3 +347,40 @@ def test_event_rejects_timestamp_before_case_creation():
 
     assert db.added == []
     assert db.committed is False
+
+
+
+def def test_case_resolution_rejects_time_before_first_response():
+    created = datetime(2026, 11, 18, 9, 0)
+    first_response = created + timedelta(minutes=20)
+    case = SimpleNamespace(
+        case_id="CP-TEST",
+        created_at=created,
+        first_response_at=first_response,
+        promises=[],
+    )
+
+    class DbStub:
+        def __init__(self):
+            self.added = []
+            self.committed = False
+
+        def add(self, value):
+            self.added.append(value)
+
+        def commit(self):
+            self.committed = True
+
+    db = DbStub()
+
+    with pytest.raises(ValueError, match="Case resolution time cannot be before the first response"):
+        ingest_event(
+            db,
+            case,
+            event_type="CASE_RESOLVED",
+            event_timestamp=first_response - timedelta(minutes=1),
+            actor_type="agent",
+        )
+
+    assert db.added == []
+    assert db.committed is False
