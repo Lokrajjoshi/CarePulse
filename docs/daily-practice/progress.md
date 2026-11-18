@@ -90,6 +90,10 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 52 | 2026-11-17 | Case event chronology | Rejected any event timestamp earlier than the case creation time, with a regression test confirming no event or interaction is added | All case history should respect the case start boundary; impossible timestamps can corrupt waiting-time, sequence, and audit calculations | Day 52: enforce case event chronology |
 
+| 47 | 2026-11-12 | Risk queue clarity | Kept cases with no recorded feedback visually neutral instead of displaying them like negative feedback, with a focused page check | Missing information and negative feedback need different visual treatment so managers do not overread the queue | Day 47: keep missing feedback neutral |
+
+| 53 | 2026-11-18 | Case event chronology | Rejected resolution events that occur before the recorded first response, with a regression test confirming no partial event is added | A case cannot be resolved before a customer has received its first response; enforcing this protects service-time and journey-history calculations | Day 53: enforce resolution chronology |
+
 ## Historical numbering note
 
 The early Git history contains a numbering gap: no verified `Day 9` commit was found during the repository audit, and an earlier `Day 11: test transfer effort scoring` commit exists on 2026-10-06 while the progress log already used Day 11 for the 2026-10-07 follow-up-ownership work. This log does not invent or renumber historical work. The inconsistency is documented here and future day numbering should remain consistent from the current sequence onward.
@@ -103,4 +107,3 @@ Keep each note short and honest:
 - Which tool, language, or framework did it help you understand?
 - How would you explain it in an interview?
 
-| 47 | 2026-11-12 | Risk queue clarity | Kept cases with no recorded feedback visually neutral instead of displaying them like negative feedback, with a focused page check | Missing information and negative feedback need different visual treatment so managers do not overread the queue | Day 47: keep missing feedback neutral |
