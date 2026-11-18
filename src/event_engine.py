@@ -18,6 +18,8 @@ def ingest_event(db, case: Case, event_type: str, event_timestamp: datetime, act
         promised = datetime.fromisoformat(metadata["promised_update_at"])
         if promised <= event_timestamp:
             raise ValueError("Promised update time must be after the event time.")
+    if event_type == "CASE_RESOLVED" and case.first_response_at and event_timestamp < case.first_response_at:
+        raise ValueError("Case resolution time cannot be before the first response.")
     if event_type == "PROMISE_FULFILLED":
         outstanding = [p for p in case.promises if not p.promise_met]
         promise_to_fulfill = max(outstanding, key=lambda p: p.promise_created_at) if outstanding else None
