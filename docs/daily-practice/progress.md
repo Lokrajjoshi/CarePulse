@@ -80,6 +80,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 46 | 2026-11-11 | Risk queue reliability | Showed a clear state for high-risk cases with no feedback and added a focused page test | Optional feedback must not make the manager's risk queue fail | Day 46: handle cases without feedback in risk queue |
 
+| 47 | 2026-11-12 | Risk queue clarity | Kept cases with no recorded feedback visually neutral instead of displaying them like negative feedback, with a focused page check | Missing information and negative feedback need different visual treatment so managers do not overread the queue | Day 47: keep missing feedback neutral |
+
 | 48 | 2026-11-13 | Test reliability | Fixed a syntax error in the missing-feedback regression test that prevented the full test suite from collecting | A valid feature change is not complete if the repository's tests cannot even start; restoring green CI keeps the project trustworthy | Day 48: repair feedback regression test |
 
 | 49 | 2026-11-14 | Promise event chronology | Rejected promise-fulfilment events whose timestamp is earlier than the promise creation time, with a regression test confirming the promise is left unchanged | Event history must preserve chronological order or an impossible timestamp can make a commitment appear successfully met | Day 49: validate promise fulfilment chronology |
@@ -89,8 +91,6 @@ Use this log to record small daily improvements and what was learned from each o
 | 51 | 2026-11-16 | Promise state validation | Rejected promise-fulfilment events when no outstanding promise exists, with a regression test confirming no event or database commit occurs | A fulfilment event should correspond to a real unresolved commitment; otherwise the case history can contain a false completion signal | Day 51: reject orphan promise fulfilment |
 
 | 52 | 2026-11-17 | Case event chronology | Rejected any event timestamp earlier than the case creation time, with a regression test confirming no event or interaction is added | All case history should respect the case start boundary; impossible timestamps can corrupt waiting-time, sequence, and audit calculations | Day 52: enforce case event chronology |
-
-| 47 | 2026-11-12 | Risk queue clarity | Kept cases with no recorded feedback visually neutral instead of displaying them like negative feedback, with a focused page check | Missing information and negative feedback need different visual treatment so managers do not overread the queue | Day 47: keep missing feedback neutral |
 
 | 53 | 2026-11-18 | Case event chronology | Rejected resolution events that occur before the recorded first response, with a regression test confirming no partial event is added | A case cannot be resolved before a customer has received its first response; enforcing this protects service-time and journey-history calculations | Day 53: enforce resolution chronology |
 
