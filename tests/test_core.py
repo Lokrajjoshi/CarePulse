@@ -350,7 +350,7 @@ def test_event_rejects_timestamp_before_case_creation():
 
 
 
-def def test_case_resolution_rejects_time_before_first_response():
+def test_case_resolution_rejects_time_before_first_response():
     created = datetime(2026, 11, 18, 9, 0)
     first_response = created + timedelta(minutes=20)
     case = SimpleNamespace(
