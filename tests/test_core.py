@@ -384,3 +384,43 @@ def test_case_resolution_rejects_time_before_first_response():
 
     assert db.added == []
     assert db.committed is False
+
+
+
+def test_case_resolution_rejects_duplicate_resolution():
+    created = datetime(2026, 11, 20, 9, 0)
+    first_response = created + timedelta(minutes=10)
+    first_resolution = created + timedelta(minutes=45)
+    case = SimpleNamespace(
+        case_id="CP-TEST",
+        created_at=created,
+        first_response_at=first_response,
+        resolved_at=first_resolution,
+        promises=[],
+    )
+
+    class DbStub:
+        def __init__(self):
+            self.added = []
+            self.committed = False
+
+        def add(self, value):
+            self.added.append(value)
+
+        def commit(self):
+            self.committed = True
+
+    db = DbStub()
+
+    with pytest.raises(ValueError, match="Case is already resolved"):
+        ingest_event(
+            db,
+            case,
+            event_type="CASE_RESOLVED",
+            event_timestamp=first_resolution + timedelta(minutes=5),
+            actor_type="agent",
+        )
+
+    assert case.resolved_at == first_resolution
+    assert db.added == []
+    assert db.committed is False
