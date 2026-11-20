@@ -96,6 +96,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 54 | 2026-11-19 | Test reliability | Repaired the resolution-chronology regression test so the suite can collect and protect the new event rule | A safeguard only protects the project when its regression test can run | Day 54: repair resolution chronology test |
 
+| 55 | 2026-11-20 | Case event integrity | Rejected a duplicate resolution event so an already-recorded resolution time cannot be overwritten, with a regression test | Service metrics and audit history need one trustworthy resolution event unless an explicit reopening workflow is designed | Day 55: prevent duplicate case resolution |
+
 ## Historical numbering note
 
 The early Git history contains a numbering gap: no verified `Day 9` commit was found during the repository audit, and an earlier `Day 11: test transfer effort scoring` commit exists on 2026-10-06 while the progress log already used Day 11 for the 2026-10-07 follow-up-ownership work. This log does not invent or renumber historical work. The inconsistency is documented here and future day numbering should remain consistent from the current sequence onward.
