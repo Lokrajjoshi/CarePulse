@@ -56,3 +56,8 @@ The complete local project runs for free with Python, FastAPI, SQLite, and open-
 ## Metrics and security notes
 
 The calculations used by pages, APIs, and reports live in `src/metrics.py`, `src/risk_engine.py`, and `src/analytics.py`. Risk bands use organisation thresholds, while the Assistant is bounded to CarePulse records and returns unsupported-question responses instead of inventing facts. Audit records do not store passwords or message contents.
+
+
+## Project walkthrough
+
+For a short explanation of the problem, demo flow, technical scope, and honest prototype boundary, see [`docs/PROJECT_WALKTHROUGH.md`](docs/PROJECT_WALKTHROUGH.md).
