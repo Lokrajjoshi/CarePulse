@@ -357,6 +357,7 @@ def test_case_resolution_rejects_time_before_first_response():
         case_id="CP-TEST",
         created_at=created,
         first_response_at=first_response,
+        resolved_at=None,
         promises=[],
     )
 

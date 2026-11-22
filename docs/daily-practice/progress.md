@@ -100,6 +100,8 @@ Use this log to record small daily improvements and what was learned from each o
 
 | 56 | 2026-11-21 | Project communication | Added a concise walkthrough of the CarePulse problem, workflow, technical scope, and synthetic-demo boundary, then linked it from the README | A prototype is easier to evaluate when its real workflow and evidence limits are explained before a feature demo | Day 56: add CarePulse project walkthrough |
 
+| 57 | 2026-11-22 | Test-model alignment | Updated the resolution-chronology regression fixture to include the real Case model's `resolved_at` field, restoring protection for the chronology and duplicate-resolution rules | Reliability checks must model the real entity shape or valid production safeguards can look broken for the wrong reason | Day 57: align resolution test fixture |
+
 ## Historical numbering note
 
 The early Git history contains a numbering gap: no verified `Day 9` commit was found during the repository audit, and an earlier `Day 11: test transfer effort scoring` commit exists on 2026-10-06 while the progress log already used Day 11 for the 2026-10-07 follow-up-ownership work. This log does not invent or renumber historical work. The inconsistency is documented here and future day numbering should remain consistent from the current sequence onward.
