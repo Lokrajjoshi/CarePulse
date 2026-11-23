@@ -63,3 +63,22 @@ The calculations used by pages, APIs, and reports live in `src/metrics.py`, `src
 For a short explanation of the problem, demo flow, technical scope, and honest prototype boundary, see [`docs/PROJECT_WALKTHROUGH.md`](docs/PROJECT_WALKTHROUGH.md).
 
 For a role-by-role presentation flow, see [`docs/ROLE_BASED_DEMO_SCRIPT.md`](docs/ROLE_BASED_DEMO_SCRIPT.md).
+
+
+## Evidence-first QA workflow
+
+CarePulse is intentionally evaluated as a business-and-data system, not only as a web interface:
+
+- **Data integrity:** fixed-seed synthetic data, tenant-scoped queries, validation rules, and export checks.
+- **Decision traceability:** explainable risk bands, configurable thresholds, recovery actions, and audit events.
+- **API quality:** Postman scenarios and automated tests for validation, role boundaries, and error states.
+- **Release confidence:** run the full test suite before changes are merged, then verify the demo flow across the main roles.
+
+Suggested pre-release sequence:
+
+```powershell
+python -m pytest
+python scripts\\reset_demo.py
+```
+
+This checklist keeps the prototype’s claims measurable, reproducible, and honest.
