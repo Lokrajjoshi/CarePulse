@@ -31,6 +31,8 @@ def ingest_event(db, case: Case, event_type: str, event_timestamp: datetime, act
             raise ValueError("Promise fulfilment time cannot be before the promise was created.")
     event = Event(event_id=f"EVT-{uuid4().hex[:10]}", case_id=case.case_id, event_type=event_type, event_timestamp=event_timestamp, actor_type=actor_type, actor_id=actor_id, message=message or None, metadata_json=json.dumps(metadata))
     db.add(event)
+    if event_type == "AGENT_MESSAGE" and case.first_response_at is None:
+        case.first_response_at = event_timestamp
     if event_type in {"CUSTOMER_MESSAGE", "AGENT_MESSAGE", "MEANINGFUL_UPDATE"}:
         result = classify(message, metadata.get("channel", "chat"))
         db.add(Interaction(interaction_id=f"INT-{uuid4().hex[:10]}", case_id=case.case_id, timestamp=event_timestamp, interaction_type=event_type.lower(), actor_type=actor_type, message=message, sentiment_ground_truth=result["label"], sentiment_score=result["score"], meaningful_update_flag=event_type in {"AGENT_MESSAGE", "MEANINGFUL_UPDATE"}, transfer_flag=False, repeat_explanation_flag=False))

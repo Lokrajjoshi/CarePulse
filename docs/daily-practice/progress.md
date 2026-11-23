@@ -117,3 +117,8 @@ Keep each note short and honest:
 - Which tool, language, or framework did it help you understand?
 - How would you explain it in an interview?
 
+
+
+### 2026-11-23 follow-up: first-response capture
+
+The event engine now records `first_response_at` from the first live `AGENT_MESSAGE` and preserves that original timestamp on later agent messages. This keeps first-response coverage and average-response metrics aligned with the actual event history rather than depending only on pre-seeded demo values.

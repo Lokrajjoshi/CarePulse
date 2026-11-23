@@ -425,3 +425,51 @@ def test_case_resolution_rejects_duplicate_resolution():
     assert case.resolved_at == first_resolution
     assert db.added == []
     assert db.committed is False
+
+
+def test_first_agent_message_sets_first_response_once():
+    created = datetime(2026, 11, 23, 9, 0)
+    first_agent_message = created + timedelta(minutes=12)
+    later_agent_message = created + timedelta(minutes=30)
+
+    case = SimpleNamespace(
+        case_id="CP-TEST",
+        created_at=created,
+        first_response_at=None,
+        resolved_at=None,
+        promises=[],
+    )
+
+    class DbStub:
+        def __init__(self):
+            self.added = []
+            self.commits = 0
+
+        def add(self, value):
+            self.added.append(value)
+
+        def commit(self):
+            self.commits += 1
+
+    db = DbStub()
+
+    ingest_event(
+        db,
+        case,
+        event_type="AGENT_MESSAGE",
+        event_timestamp=first_agent_message,
+        actor_type="agent",
+        message="I am reviewing this now.",
+    )
+    assert case.first_response_at == first_agent_message
+
+    ingest_event(
+        db,
+        case,
+        event_type="AGENT_MESSAGE",
+        event_timestamp=later_agent_message,
+        actor_type="agent",
+        message="Here is the next update.",
+    )
+    assert case.first_response_at == first_agent_message
+    assert db.commits == 2
