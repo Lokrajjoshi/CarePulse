@@ -61,3 +61,5 @@ The calculations used by pages, APIs, and reports live in `src/metrics.py`, `src
 ## Project walkthrough
 
 For a short explanation of the problem, demo flow, technical scope, and honest prototype boundary, see [`docs/PROJECT_WALKTHROUGH.md`](docs/PROJECT_WALKTHROUGH.md).
+
+For a role-by-role presentation flow, see [`docs/ROLE_BASED_DEMO_SCRIPT.md`](docs/ROLE_BASED_DEMO_SCRIPT.md).
