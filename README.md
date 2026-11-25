@@ -8,7 +8,7 @@ CarePulse is a synthetic, industry-neutral customer-experience intervention prot
 - Jinja customer, agent, case explorer, and executive dashboard pages.
 - 3,000 fixed-seed synthetic cases across eight industries, with interactions, sentiment journeys, promises, interventions, and feedback.
 - Explainable silent-wait, customer-effort, experience-risk, recovery, and next-best-care calculations.
-- Offline CX Intelligence Assistant, sentiment signal workflow, and event-driven Integration Simulator.
+- Offline case guidance, sentiment signal workflow, and event-driven Integration Simulator.
 - Signed demo login with Admin, CX Manager, Business Manager, Agent, and Customer roles.
 - Organisation-scoped records, configurable risk thresholds, audit events, friendly error states, tracked recovery actions, and CI checks.
 - SQL learning queries, analytics exports, Power BI model/DAX/setup assets, Postman collection, Java/Selenium starter suite, and architecture notes.
@@ -55,7 +55,7 @@ The complete local project runs for free with Python, FastAPI, SQLite, and open-
 
 ## Metrics and security notes
 
-The calculations used by pages, APIs, and reports live in `src/metrics.py`, `src/risk_engine.py`, and `src/analytics.py`. Risk bands use organisation thresholds, while the Assistant is bounded to CarePulse records and returns unsupported-question responses instead of inventing facts. Audit records do not store passwords or message contents.
+The calculations used by pages, APIs, and reports live in `src/metrics.py`, `src/risk_engine.py`, and `src/analytics.py`. Risk bands use organisation thresholds, while case guidance stays within CarePulse records and returns a clear unsupported-question response when evidence is unavailable. Audit records do not store passwords or message contents.
 
 
 ## Project walkthrough
