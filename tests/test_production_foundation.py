@@ -27,6 +27,7 @@ def test_risk_monitor_explains_the_next_action():
 
 def test_production_users_are_redirected(monkeypatch):
     monkeypatch.setattr(settings, "app_env", "production")
+    monkeypatch.setattr(settings, "secret_key", "production-test-key-" + "x" * 32)
     with TestClient(app, base_url="https://testserver") as client:
         response = client.get("/dashboard", follow_redirects=False)
         assert response.status_code == 303
@@ -41,6 +42,7 @@ def login(client, email):
 
 def test_role_restriction_and_validation(monkeypatch):
     monkeypatch.setattr(settings, "app_env", "production")
+    monkeypatch.setattr(settings, "secret_key", "production-test-key-" + "x" * 32)
     with TestClient(app, base_url="https://testserver") as client:
         login(client, "agent@carepulse.demo")
         with SessionLocal() as db:
@@ -55,6 +57,7 @@ def test_role_restriction_and_validation(monkeypatch):
 
 def test_agent_case_list_only_shows_owned_cases(monkeypatch):
     monkeypatch.setattr(settings, "app_env", "production")
+    monkeypatch.setattr(settings, "secret_key", "production-test-key-" + "x" * 32)
     with TestClient(app, base_url="https://testserver") as client:
         login(client, "agent@carepulse.demo")
         with SessionLocal() as db:
@@ -75,6 +78,7 @@ def test_agent_case_list_only_shows_owned_cases(monkeypatch):
 
 def test_agent_cannot_open_unassigned_assistant_case(monkeypatch):
     monkeypatch.setattr(settings, "app_env", "production")
+    monkeypatch.setattr(settings, "secret_key", "production-test-key-" + "x" * 32)
     with TestClient(app, base_url="https://testserver") as client:
         login(client, "agent@carepulse.demo")
         with SessionLocal() as db:
@@ -205,6 +209,7 @@ def test_login_rejects_control_character_return_path():
 
 def test_production_login_cookie_has_security_flags(monkeypatch):
     monkeypatch.setattr(settings, "app_env", "production")
+    monkeypatch.setattr(settings, "secret_key", "production-test-key-" + "x" * 32)
 
     with TestClient(app, base_url="https://testserver") as client:
         response = client.post(
@@ -226,6 +231,7 @@ def test_production_login_cookie_has_security_flags(monkeypatch):
 
 def test_logout_ends_production_session(monkeypatch):
     monkeypatch.setattr(settings, "app_env", "production")
+    monkeypatch.setattr(settings, "secret_key", "production-test-key-" + "x" * 32)
 
     with TestClient(app, base_url="https://testserver") as client:
         login(client, "admin@carepulse.demo")
@@ -243,6 +249,7 @@ def test_logout_ends_production_session(monkeypatch):
 
 def test_logout_expires_session_cookie(monkeypatch):
     monkeypatch.setattr(settings, "app_env", "production")
+    monkeypatch.setattr(settings, "secret_key", "production-test-key-" + "x" * 32)
 
     with TestClient(app, base_url="https://testserver") as client:
         login(client, "admin@carepulse.demo")
@@ -256,6 +263,7 @@ def test_logout_expires_session_cookie(monkeypatch):
 
 def test_failed_login_does_not_set_session_cookie(monkeypatch):
     monkeypatch.setattr(settings, "app_env", "production")
+    monkeypatch.setattr(settings, "secret_key", "production-test-key-" + "x" * 32)
 
     with TestClient(app, base_url="https://testserver") as client:
         response = client.post(
@@ -273,6 +281,7 @@ def test_failed_login_does_not_set_session_cookie(monkeypatch):
 
 def test_login_normalizes_email_input(monkeypatch):
     monkeypatch.setattr(settings, "app_env", "production")
+    monkeypatch.setattr(settings, "secret_key", "production-test-key-" + "x" * 32)
 
     with TestClient(app, base_url="https://testserver") as client:
         response = client.post(
@@ -290,6 +299,7 @@ def test_login_normalizes_email_input(monkeypatch):
 
 def test_inactive_user_cannot_login(monkeypatch):
     monkeypatch.setattr(settings, "app_env", "production")
+    monkeypatch.setattr(settings, "secret_key", "production-test-key-" + "x" * 32)
 
     with SessionLocal() as db:
         user = db.query(User).filter_by(email="admin@carepulse.demo").one()
@@ -319,6 +329,7 @@ def test_inactive_user_cannot_login(monkeypatch):
 
 def test_inactive_user_existing_session_is_rejected(monkeypatch):
     monkeypatch.setattr(settings, "app_env", "production")
+    monkeypatch.setattr(settings, "secret_key", "production-test-key-" + "x" * 32)
 
     with TestClient(app, base_url="https://testserver") as client:
         login(client, "admin@carepulse.demo")
